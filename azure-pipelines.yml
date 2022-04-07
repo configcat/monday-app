@@ -1,0 +1,30 @@
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  batch: true
+  branches:
+    include:
+    - master
+
+pr: none
+
+pool:
+  name: Contabo
+steps:
+
+- task: Docker@2
+  displayName: build
+  inputs:
+    containerRegistry: Docker Hub
+    repository: 'configcat/monday-app'
+    command: build
+    buildContext: '$(System.DefaultWorkingDirectory)'
+
+- task: Docker@2
+  displayName: push
+  inputs:
+    containerRegistry: Docker Hub
+    command: push
+    repository: 'configcat/monday-app'
+    buildContext: '$(System.DefaultWorkingDirectory)'
