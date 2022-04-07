@@ -37,7 +37,7 @@ Manage features and change your software configuration using [ConfigCat feature 
    ```
    You should see something like this:
    ![ngrok](img/guide2.png  "ngrok")
-4. Go to the [developers page](https://configcat.monday.com/apps/manage) of Monday
+4. Go to the developers page (https://YOUR_ORGANIZATION_NAME.monday.com/apps/manage) of your Monday account
 5. Hit the `Create App` button
 6. Add a new feature
 7. Select `Item Views` and hit `Let's go`
