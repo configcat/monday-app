@@ -1,0 +1,4 @@
+export const environment = {
+  production: true,
+  publicApiBaseUrl: '${CC_PublicApiBaseUrl}',
+};

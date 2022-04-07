@@ -1,0 +1,19 @@
+<app-loader *ngIf="loading"></app-loader>
+<div class="container" *ngIf="!loading" id="setting-item">
+    <div class="actions">
+        <button mat-raised-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+        <button mat-raised-button [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
+        <button mat-raised-button [routerLink]="['/authorize']">Unauthorize</button>
+    </div>
+    <div *ngFor="let integrationLinkDetail of integrationLinkDetails">
+        <configcat-setting-item [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+            [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+            [productId]="integrationLinkDetail.product?.productId ?? ''"
+            [configId]="integrationLinkDetail.config?.configId || ''"
+            [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
+            [settingId]="integrationLinkDetail.setting?.settingId || 0" [canEditSetting]=false
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Remove from item"
+            [showEnvironmentName]="true">
+        </configcat-setting-item>
+    </div>
+</div>

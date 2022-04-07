@@ -1,0 +1,16 @@
+<div class="auth">
+    <h2>Authorize ConfigCat Feature Flags</h2>
+
+    <app-loader *ngIf="loading"></app-loader>
+    <div *ngIf="!loading">
+        <configcat-authorization *ngIf="!authorizationParameters" (error)="error($event)" (authorized)="login($event)">
+        </configcat-authorization>
+        <div *ngIf="authorizationParameters" class="unauthorize">
+            Authorized with: {{authorizationParameters.basicAuthUsername}}
+            <div class="actions">
+                <button mat-raised-button color="primary" (click)="unauthorize()">Unauthorize</button>
+                <button mat-raised-button [routerLink]="['/']">Go to feature flags</button>
+            </div>
+        </div>
+    </div>
+</div>

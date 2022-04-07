@@ -1,0 +1,13 @@
+.container {
+    padding: 0 8px;
+    margin: 8px;
+
+    .actions {
+        display: flex;
+
+        &>* {
+            margin-right: 8px;
+        }
+    }
+
+}

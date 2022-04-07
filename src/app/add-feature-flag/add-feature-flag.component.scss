@@ -1,0 +1,25 @@
+.container {
+    margin: 8px;
+
+    .header {
+        font-size: large;
+        margin-top: 16px;
+    }
+
+    .form {
+        .container {
+
+            >* {
+                width: 100%;
+            }
+        }
+    }
+
+    .buttons {
+        margin-bottom: 16px;
+
+        >* {
+            margin-right: 16px;
+        }
+    }
+}
