@@ -38,7 +38,7 @@ export class FeatureFlagsComponent implements OnInit {
     return this.mondayService.getContext().then(context => {
       this.publicApiService
         .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-        .getIntegrationLinkDetails(IntegrationLinkType.Trello, context.data.itemId)
+        .getIntegrationLinkDetails(IntegrationLinkType.Monday, context.data.itemId)
         .toPromise()
         .then((integrationLinkDetails) => {
           this.integrationLinkDetails = integrationLinkDetails?.details || [];
@@ -63,7 +63,7 @@ export class FeatureFlagsComponent implements OnInit {
         return this.mondayService.getContext().then(context => {
           this.publicApiService
             .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-            .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Trello, context.data.itemId)
+            .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Monday, context.data.itemId)
             .toPromise()
             .then(() => {
               return this.loadFeatureFlags();

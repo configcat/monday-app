@@ -53,7 +53,7 @@ export class AddFeatureFlagComponent implements OnInit {
         return this.publicApiService
           .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
           .addOrUpdateIntegrationLink(this.formGroup.value.environmentId, this.formGroup.value.settingId,
-            IntegrationLinkType.Trello, context.data.itemId,
+            IntegrationLinkType.Monday, context.data.itemId,
             { description: "Monday.com item" })
           .toPromise();
       }
