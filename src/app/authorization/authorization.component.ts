@@ -18,31 +18,18 @@ export class AuthorizationComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.authorizationParameters = null;
-    this.mondayService.getAuthorizationParameters()
-      .then(authorizationParameters => {
-        if (authorizationParameters && authorizationParameters.basicAuthUsername && authorizationParameters.basicAuthPassword) {
-          this.authorizationParameters = authorizationParameters;
-        }
-        this.loading = false;
-      })
-      .catch(() => {
-        this.loading = false;
-      });
+    this.authorizationParameters = this.mondayService.getAuthorizationParameters();
+    this.loading = false;
   }
 
   login(authorizationParameters: any) {
-    this.mondayService
-      .setAuthorizationParameters(authorizationParameters)
-      .then(() => {
-        this.mondayService.showSuccessMessage('Authorized to ConfigCat 🎉');
-      })
-      .then(() => this.router.navigate(['/']));
+    this.mondayService.setAuthorizationParameters(authorizationParameters);
+    this.mondayService.showSuccessMessage('Authorized to ConfigCat 🎉');
   }
 
   unauthorize() {
-    this.mondayService.removeAuthorizationParameters()
-      .then(() => this.authorizationParameters = null);
+    this.mondayService.removeAuthorizationParameters();
+    this.authorizationParameters = null;
   }
 
   error(error: any) {

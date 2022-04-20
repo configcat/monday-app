@@ -34,12 +34,8 @@ export class AddFeatureFlagComponent implements OnInit {
       settingId: [null, [Validators.required]]
     });
 
-    this.mondayService.getAuthorizationParameters().then(authorizationParameters => {
-      if (authorizationParameters && authorizationParameters.basicAuthUsername && authorizationParameters.basicAuthPassword) {
-        this.authorizationParameters = authorizationParameters;
-      }
-      this.loading = false;
-    });
+    this.authorizationParameters = this.mondayService.getAuthorizationParameters();
+    this.loading = false;
   }
 
 

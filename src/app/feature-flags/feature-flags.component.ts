@@ -24,21 +24,20 @@ export class FeatureFlagsComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.mondayService.getAuthorizationParameters().then(authorizationParameters => {
-      if (!authorizationParameters || !authorizationParameters.basicAuthPassword || !authorizationParameters.basicAuthUsername) {
-        this.redirectToAuth();
-        return;
-      }
-      this.authorizationParameters = authorizationParameters;
-      this.loadFeatureFlags();
-    });
+    const params = this.mondayService.getAuthorizationParameters();
+    if (!params) {
+      this.redirectToAuth();
+      return;
+    }
+    this.authorizationParameters = params;
+    this.loadFeatureFlags();
   }
 
   loadFeatureFlags() {
     return this.mondayService.getContext().then(context => {
       this.publicApiService
         .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-        .getIntegrationLinkDetails(IntegrationLinkType.Monday, context.data.itemId)
+        .getIntegrationLinkDetails(IntegrationLinkType.Monday, context?.data?.itemId || '1')
         .toPromise()
         .then((integrationLinkDetails) => {
           this.integrationLinkDetails = integrationLinkDetails?.details || [];

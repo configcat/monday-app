@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthorizationParameters } from '../models/authorization-parameters';
-import { PublicApiService } from 'ng-configcat-publicapi-ui';
-import { IntegrationLinkType } from 'ng-configcat-publicapi';
 import mondaySdk from "monday-sdk-js";
+import { LocalStorageService } from './localstorage-service';
 const monday = mondaySdk();
 
 @Injectable({
@@ -10,23 +9,29 @@ const monday = mondaySdk();
 })
 export class MondayService {
 
-    constructor(private publicApiService: PublicApiService) { }
+    authorizationkey = 'configcat-auth';
 
-    getAuthorizationParameters(): Promise<AuthorizationParameters> {
-        return monday.storage.instance.getItem('authorization').then((res: any) => {
-            if (res?.data?.value) {
-                return JSON.parse(res.data.value);
-            }
+    constructor(
+        private localStorageService: LocalStorageService) { }
+
+    getAuthorizationParameters(): AuthorizationParameters | null {
+        const authorizationParameters: AuthorizationParameters = JSON.parse(this.localStorageService.getItem(this.authorizationkey) || '{}');
+        if (authorizationParameters
+            && authorizationParameters.basicAuthPassword && authorizationParameters.basicAuthUsername
+            && authorizationParameters.email && authorizationParameters.fullName) {
+            return authorizationParameters;
+        }
+        else {
             return null;
-        });
+        }
     }
 
-    setAuthorizationParameters(authorizationParameters: AuthorizationParameters): Promise<any> {
-        return monday.storage.instance.setItem('authorization', JSON.stringify(authorizationParameters));
+    setAuthorizationParameters(authorizationParameters: AuthorizationParameters) {
+        this.localStorageService.setItem(this.authorizationkey, JSON.stringify(authorizationParameters));
     }
 
-    removeAuthorizationParameters(): Promise<any> {
-        return monday.storage.instance.setItem('authorization', '');
+    removeAuthorizationParameters() {
+        this.localStorageService.removeItem(this.authorizationkey);
     }
 
     getContext(): Promise<any> {

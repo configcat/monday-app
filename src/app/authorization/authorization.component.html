@@ -3,8 +3,10 @@
 
     <app-loader *ngIf="loading"></app-loader>
     <div *ngIf="!loading">
-        <configcat-authorization *ngIf="!authorizationParameters" (error)="error($event)" (authorized)="login($event)">
-        </configcat-authorization>
+        <div *ngIf="!authorizationParameters">
+            <configcat-authorization (error)="error($event)" (authorized)="login($event)">
+            </configcat-authorization>
+        </div>
         <div *ngIf="authorizationParameters" class="unauthorize">
             Authorized with: {{authorizationParameters.basicAuthUsername}}
             <div class="actions">

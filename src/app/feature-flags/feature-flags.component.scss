@@ -4,9 +4,14 @@
 
     .actions {
         display: flex;
+        justify-content: flex-end;
 
         &>* {
             margin-right: 8px;
+        }
+
+        .link {
+            cursor: pointer;
         }
     }
 
