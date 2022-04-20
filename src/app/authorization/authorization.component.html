@@ -8,7 +8,9 @@
             </configcat-authorization>
         </div>
         <div *ngIf="authorizationParameters" class="unauthorize">
-            Authorized with: {{authorizationParameters.basicAuthUsername}}
+            <h3>Authorized</h3>
+            <div>Email: <strong>{{authorizationParameters.email}}</strong></div>
+            <div>Basic auth user name: <strong>{{authorizationParameters.basicAuthUsername}}</strong></div>
             <div class="actions">
                 <button mat-raised-button color="primary" (click)="unauthorize()">Unauthorize</button>
                 <button mat-raised-button [routerLink]="['/']">Go to feature flags</button>

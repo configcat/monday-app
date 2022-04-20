@@ -25,6 +25,7 @@ export class AuthorizationComponent implements OnInit {
   login(authorizationParameters: any) {
     this.mondayService.setAuthorizationParameters(authorizationParameters);
     this.mondayService.showSuccessMessage('Authorized to ConfigCat 🎉');
+    this.router.navigate(['/']);
   }
 
   unauthorize() {

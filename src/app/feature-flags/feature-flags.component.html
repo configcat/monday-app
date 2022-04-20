@@ -1,12 +1,12 @@
 <app-loader *ngIf="loading"></app-loader>
 <div class="container" *ngIf="!loading" id="setting-item">
-    <div class="actions right">
-        Authorized as {{authorizationParameters.email}}&nbsp;
+    <div class="actions">
+        Authorized as&nbsp;<b>{{authorizationParameters.email}}</b>&nbsp;
         <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
     </div>
     <div class="actions">
-        <button mat-raised-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
-        <button mat-raised-button [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
+        <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
     </div>
     <div *ngFor="let integrationLinkDetail of integrationLinkDetails">
         <configcat-setting-item [basicAuthUsername]="authorizationParameters.basicAuthUsername"

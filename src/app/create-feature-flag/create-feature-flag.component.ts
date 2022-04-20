@@ -69,11 +69,10 @@ export class CreateFeatureFlagComponent implements OnInit {
         }
       )
       .then(() => {
-        this.router.navigate(['/'])
+        this.router.navigate(['/']);
       })
       .catch(error => {
         console.log(error);
       });
   }
-
 }
