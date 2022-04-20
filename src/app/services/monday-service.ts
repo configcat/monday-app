@@ -15,7 +15,11 @@ export class MondayService {
         private localStorageService: LocalStorageService) { }
 
     getAuthorizationParameters(): AuthorizationParameters | null {
-        const authorizationParameters: AuthorizationParameters = JSON.parse(this.localStorageService.getItem(this.authorizationkey) || '{}');
+        const stored = this.localStorageService.getItem(this.authorizationkey);
+        if (!stored) {
+            return null;
+        }
+        const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || '{}');
         if (authorizationParameters
             && authorizationParameters.basicAuthPassword && authorizationParameters.basicAuthUsername
             && authorizationParameters.email && authorizationParameters.fullName) {
@@ -27,7 +31,7 @@ export class MondayService {
     }
 
     setAuthorizationParameters(authorizationParameters: AuthorizationParameters) {
-        this.localStorageService.setItem(this.authorizationkey, JSON.stringify(authorizationParameters));
+        this.localStorageService.setItem(this.authorizationkey, btoa(JSON.stringify(authorizationParameters)));
     }
 
     removeAuthorizationParameters() {
