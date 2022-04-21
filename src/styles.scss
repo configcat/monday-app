@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 @import '@angular/material/theming';
 // Plus imports for other components in your app.
@@ -22,22 +21,21 @@ $configcat-theme: mat.define-light-theme($configcat-primary, $configcat-accent, 
 $custom-typography: mat.define-typography-config($font-family: 'Montserrat, Roboto, "Helvetica Neue", sans-serif');
 @include mat.core($custom-typography);
 
-html,
-body {
-    font-family: Montserrat, Roboto, "Helvetica Neue", sans-serif;
-    height: 100%;
-    overflow-x: hidden;
-}
-
 body {
     margin: 0;
+    font-family: Montserrat, Roboto, "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    background-color: #fff;
 
     a {
         color: #007bff;
-        text-decoration: none;
-    }
+      }
 }
 
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
 
 h3 {
     font-weight: 600;
@@ -46,6 +44,7 @@ h3 {
 b {
     font-weight: 600;
 }
+
 
 .green-snackbar {
     background-color: #4caf50;

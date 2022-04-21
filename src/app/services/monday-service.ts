@@ -42,11 +42,33 @@ export class MondayService {
         return monday.get("context");
     }
 
+    getItem(itemId: any): Promise<any> {
+        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`)
+            .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
+    }
+
     showSuccessMessage(message: string) {
         monday.execute("notice", {
             message: message,
             type: 'success',
             timeout: 2000,
         });
+    }
+
+    getParentOrigin() {
+        const locationAreDisctint = (window.location !== window.parent.location);
+        const parentOrigin = '' + ((locationAreDisctint ? document.referrer : document.location) || '');
+
+        if (parentOrigin) {
+            return new URL(parentOrigin).origin;
+        }
+
+        const currentLocation = document.location;
+
+        if (currentLocation.ancestorOrigins && currentLocation.ancestorOrigins.length) {
+            return currentLocation.ancestorOrigins[0];
+        }
+
+        return '';
     }
 }

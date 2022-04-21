@@ -41,7 +41,7 @@ import { DeleteSettingDialogComponent } from './delete-setting-dialog/delete-set
     ReactiveFormsModule,
     CommonModule,
     MatButtonModule,
-    NgConfigCatPublicApiUIModule.forRoot(() => ({ basePath: environment.publicApiBaseUrl })),
+    NgConfigCatPublicApiUIModule.forRoot(() => ({ basePath: environment.publicApiBaseUrl, dashboardBasePath: environment.dashboardBaseUrl })),
     MatDialogModule,
     MatFormFieldModule,
     MatOptionModule,
