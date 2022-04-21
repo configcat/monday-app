@@ -52,7 +52,7 @@ export class FeatureFlagsComponent implements OnInit {
   }
 
   onDeleteSettingRequested(data: any) {
-    const dialogRef = this.dialog.open(DeleteSettingDialogComponent);
+    const dialogRef = this.dialog.open(DeleteSettingDialogComponent, { data: { settingName: data.setting.name } });
 
     dialogRef.afterClosed()
       .subscribe((result: any) => {

@@ -1,12 +1,23 @@
 <app-loader *ngIf="loading"></app-loader>
 <div class="container" *ngIf="!loading" id="setting-item">
-    <div class="actions">
+    <div class="auth">
         Authorized as&nbsp;<b>{{authorizationParameters.email}}</b>&nbsp;
         <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
     </div>
-    <div class="actions">
+    <div class="actions" *ngIf="integrationLinkDetails && integrationLinkDetails.length">
+        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
         <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
-        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
+    </div>
+    <div *ngIf="!integrationLinkDetails || !integrationLinkDetails.length" class="empty">
+        <div class="text">
+            You have no linked feature flags.
+        </div>
+        <div class="buttons">
+            <button mat-flat-button [routerLink]="['/addfeatureflag']" color="primary">Link existing feature
+                flag</button>
+            <span> or </span>
+            <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+        </div>
     </div>
     <div *ngFor="let integrationLinkDetail of integrationLinkDetails">
         <configcat-setting-item [basicAuthUsername]="authorizationParameters.basicAuthUsername"
@@ -15,7 +26,7 @@
             [configId]="integrationLinkDetail.config?.configId || ''"
             [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
             [settingId]="integrationLinkDetail.setting?.settingId || 0" [canEditSetting]=false
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Remove from item"
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
             [showEnvironmentName]="true">
         </configcat-setting-item>
     </div>

@@ -1,6 +1,9 @@
-<h3 mat-dialog-title>Remove Feature Flag or Setting from Monday</h3>
-<br />
+<h3 mat-dialog-title>Unlink feature flag?</h3>
+<p>
+    Are you sure you want to unlink the <strong>{{data.settingName}}</strong> feature flag from this Monday item?
+    The feature flag won't be deleted from ConfigCat.
+</p>
 <div mat-dialog-actions>
-    <button type="button" mat-raised-button color="primary" (click)="removeFromCard()">Remove from item</button>
-    <button type="button" mat-raised-button (click)="cancel()">Cancel</button>
+    <button type="button" mat-flat-button color="primary" (click)="removeFromCard()">Unlink</button>
+    <button type="button" mat-stroked-button (click)="cancel()">Cancel</button>
 </div>

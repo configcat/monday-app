@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-setting-dialog',
@@ -8,7 +8,8 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class DeleteSettingDialogComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DeleteSettingDialogComponent>) { }
+  constructor(public dialogRef: MatDialogRef<DeleteSettingDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { settingName: string }) { }
 
   ngOnInit(): void {
   }
