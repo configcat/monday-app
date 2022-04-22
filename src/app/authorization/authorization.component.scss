@@ -5,9 +5,18 @@
         padding-left: 8px;
     }
 
-    .desc{
-        padding-left: 8px;
+    .tip {
+        border: 1px solid rgba(90, 104, 178, 0.3);
+        background-color: rgba(90, 104, 178, 0.1);
+        border-radius: 5px;
+        margin-bottom: 1.4rem;
+        padding: 1rem;
+
+        .desc {
+            padding-left: 8px;
+        }
     }
+
 
     .unauthorize {
         margin-top: 24px;
