@@ -1,6 +1,8 @@
 <div class="container">
-    <div class="header">Link existing ConfigCat Feature Flag</div>
-    <br />
+    <h2 class="header">Link existing ConfigCat feature flag</h2>
+    <p>
+        The ConfigCat feature flag you select here will be linked to this Monday item.
+    </p>
     <app-loader *ngIf="loading"></app-loader>
     <div *ngIf="!loading">
         <form *ngIf="authorizationParameters" (ngSubmit)="add()" [formGroup]="formGroup" class="form">
@@ -26,7 +28,7 @@
                 </configcat-setting-select>
             </div>
             <div class="buttons">
-                <button mat-flat-button color="primary" type="submit">Add to item</button>
+                <button mat-flat-button color="primary" type="submit">Link</button>
                 <button mat-stroked-button type="button" [routerLink]="['/']">Go back</button>
             </div>
         </form>

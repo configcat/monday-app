@@ -1,10 +1,13 @@
 <div class="container">
-    <div class="header">Create & Link ConfigCat Feature Flag</div>
-    <br />
+    <h2 class="header">Create & Link ConfigCat Feature Flag</h2>
+    <p>
+        The ConfigCat feature flag you create here will be linked to this Monday item.
+    </p>
     <div *ngIf="!loading">
         <form *ngIf="authorizationParameters" (ngSubmit)="add()" [formGroup]="formGroup" class="form">
             <div>
-                <div class="header small">1. Select Product and Config</div>
+                <h3 class="header small">1. Select the target location in ConfigCat</h3>
+                <p>The feature flag will be created under the following product and config in ConfigCat.</p>
                 <configcat-product-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
                     [basicAuthPassword]="authorizationParameters.basicAuthPassword"
                     [valueFormControl]="formGroup.controls.productId" name="productId">
@@ -15,7 +18,10 @@
                     *ngIf="formGroup.controls.productId.value">
                 </configcat-config-select>
 
-                <div class="header small">2. Setup Feature Flag</div>
+                <h3 class="header small">2. Set feature flag properties</h3>
+                <p>
+                    The feature flag will be created with the following properties in ConfigCat.
+                </p>
                 <mat-form-field class="form-field" appearance="outline">
                     <mat-label>Type</mat-label>
                     <mat-select placeholder="Type" formControlName="settingType">
@@ -26,24 +32,28 @@
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field class="form-field" appearance="outline">
-                    <mat-label>Name for hoomans *</mat-label>
+                    <mat-label>Name for hoomans</mat-label>
                     <input matInput placeholder="My awesome feature" formControlName="name">
-                    <mat-hint>A friendly name that best describes your setting.</mat-hint>
+                    <mat-hint>A friendly name that best describes your feature flag.</mat-hint>
                 </mat-form-field>
                 <mat-form-field class="form-field" appearance="outline">
-                    <mat-label>Key for programs *</mat-label>
+                    <mat-label>Key for programs</mat-label>
                     <input matInput placeholder="isMyAwesomeFeatureEnabled" formControlName="key">
                     <mat-hint>
-                        Your applications will access your setting via this key.
+                        Your applications will access your feature flag via this key.
                     </mat-hint>
                 </mat-form-field>
                 <mat-form-field class="form-field" appearance="outline">
                     <mat-label>Hint or description (Optional)</mat-label>
                     <textarea matInput placeholder="Hint or description (Optional)" formControlName="hint"></textarea>
-                    <mat-hint>A description to help you remember the purpose of your setting.</mat-hint>
+                    <mat-hint>A reminder for your future self.</mat-hint>
                 </mat-form-field>
 
-                <div class="header small">3. Select which environment should we link to this card</div>
+                <h3 class="header small">3. Link ConfigCat environment</h3>
+                <p>
+                    This Monday item will be linked to the following environment in ConfigCat. So it will
+                    display/set the feature flag value in that environment.
+                </p>
                 <configcat-environment-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
                     [productId]="formGroup.controls.productId.value"
                     [basicAuthPassword]="authorizationParameters.basicAuthPassword"
@@ -51,7 +61,7 @@
                 </configcat-environment-select>
             </div>
             <div class="buttons">
-                <button mat-flat-button color="primary" type="submit">Create Feature Flag and add to Item</button>
+                <button mat-flat-button color="primary" type="submit">Create and link</button>
                 <button mat-stroked-button type="button" [routerLink]="['/']">Go back</button>
             </div>
         </form>
