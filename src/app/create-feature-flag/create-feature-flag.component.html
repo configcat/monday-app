@@ -1,7 +1,7 @@
 <div class="container">
     <h2 class="header">Create & Link ConfigCat Feature Flag</h2>
     <p>
-        The ConfigCat feature flag you create here will be linked to this Monday item.
+        The ConfigCat feature flag you create here will be linked to this monday item.
     </p>
     <div *ngIf="!loading">
         <form *ngIf="authorizationParameters" (ngSubmit)="add()" [formGroup]="formGroup" class="form">
@@ -51,7 +51,7 @@
 
                 <h3 class="header small">3. Link ConfigCat environment</h3>
                 <p>
-                    This Monday item will be linked to the following environment in ConfigCat. So it will
+                    This monday item will be linked to the following environment in ConfigCat. So it will
                     display/set the feature flag value in that environment.
                 </p>
                 <configcat-environment-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"

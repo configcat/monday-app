@@ -42,6 +42,11 @@ export class MondayService {
         return monday.get("context");
     }
 
+    getSlug(itemId: any): Promise<any> {
+        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`)
+            .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
+    }
+
     getItem(itemId: any): Promise<any> {
         return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`)
             .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);

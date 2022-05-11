@@ -1,23 +1,23 @@
-# ConfigCat Feature Flags Monday App
+# ConfigCat Feature Flags monday.com App
 
-Turn features On / Off right from an Item on your Monday.com dashboard. Also you can add Targeting or Percentage Rules just as easily.
+Turn features On / Off right from an Item on your monday.com dashboard. Also you can add Targeting or Percentage Rules just as easily.
 
 ## About ConfigCat
 
 Manage features and change your software configuration using [ConfigCat feature flags](https://configcat.com), without the need to re-deploy code. A [10 minute trainable Dashboard](https://app.configcat.com) allows even non-technical team members to manage features directly. Deploy anytime, release when confident. Target a specific group of users first with new ideas. Supports A/B/n testing and soft launching. Provides [open-source SDKs](https://github.com/configcat) for easy integration with any web, mobile or backend application.
 
 ## Installation
-<img src="" alt="Installation of the ConfigCat Feature Flags Monday App" width="640"/>
+<img src="" alt="Installation of the ConfigCat Feature Flags monday App" width="640"/>
 
-1. Install ConfigCat Feature Flags app in your Monday.com account.
+1. Install ConfigCat Feature Flags app in your monday.com account.
 2. Add ConfigCat Feature Flags to a dashboard item
 3. Get your ConfigCat Public API credentials: https://app.configcat.com/my-account/public-api-credentials
 4. Click authorize.
 
 ## Usage
-<img src="" alt="Usage of the ConfigCat Feature Flags Monday App" width="640"/>
+<img src="" alt="Usage of the ConfigCat Feature Flags monday App" width="640"/>
 
-1. Open any Item on your Monday.com board.
+1. Open any Item on your monday.com board.
 2. Push `Link existing feature flag`
 3. Select a Product, Config, Environment and a Feature Flag to be linked to your card.
 4. When linked, you can turn your features On / Off right from this dashboard item.
@@ -37,7 +37,7 @@ Manage features and change your software configuration using [ConfigCat feature 
    ```
    You should see something like this:
    ![ngrok](img/guide2.png  "ngrok")
-1. Go to the developers page (https://YOUR_ORGANIZATION_NAME.monday.com/apps/manage) of your Monday account
+1. Go to the developers page (https://YOUR_ORGANIZATION_NAME.monday.com/apps/manage) of your monday account
 1. Hit the `Create App` button
 1. Go to the `OAuth` page and select the `boards:read` permission
 1. Add a new feature
