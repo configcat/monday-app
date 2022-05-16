@@ -47,8 +47,9 @@ export class CreateFeatureFlagComponent implements OnInit {
     }
 
     this.mondayService.getContext()
+      .then(context => this.mondayService.getItem(context.data.itemId))
       .then(
-        context => {
+        item => {
           return this.publicApiService
             .createSettingsService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
             .createSetting(this.formGroup.value.configId, {
@@ -59,11 +60,19 @@ export class CreateFeatureFlagComponent implements OnInit {
             })
             .toPromise()
             .then((setting: any) => {
+              let url = '';
+              if (item?.id && item?.board?.id){
+                url = this.mondayService.getParentOrigin();
+                if (url){
+                  url += `/boards/${item.board.id}/pulses/${item.id}`;
+                }
+              }
+              
               return this.publicApiService
                 .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
                 .addOrUpdateIntegrationLink(this.formGroup.value.environmentId, setting.settingId,
-                  IntegrationLinkType.Monday, context.data.itemId,
-                  { description: context.data.name })
+                  IntegrationLinkType.Monday, item.itemId,
+                  { description: item.name, url })
                 .toPromise();
             });
         }
