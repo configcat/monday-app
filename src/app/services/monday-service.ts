@@ -46,14 +46,14 @@ export class MondayService {
     isViewOnly(): Promise<boolean> {
         return monday.get("sessionToken")
             .then((sessionToken: any) => {
+                if (!sessionToken?.data) {
+                    return false;
+                }
+
                 try {
-                    const decoded: any = jwt_decode(sessionToken);
+                    const decoded: any = jwt_decode(sessionToken.data);
 
-                    if (!decoded.hasOwnProperty('isViewOnly')) {
-                        return false;
-                    }
-
-                    return !!decoded['isViewOnly'];
+                    return decoded?.dat?.is_view_only ?? false;
                 } catch (error) {
                     return false;
                 }
