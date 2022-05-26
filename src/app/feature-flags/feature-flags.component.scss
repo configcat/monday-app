@@ -1,10 +1,12 @@
 .container {
     padding: 0 8px;
     margin: 8px;
+
     .auth {
         display: flex;
         justify-content: flex-end;
         margin-bottom: 16px;
+        text-align: right;
 
         .link {
             cursor: pointer;
@@ -46,5 +48,12 @@
                 margin: 8px 0;
             }
         }
+    }
+
+    .help {
+        margin-top: 64px;
+        display: flex;
+        justify-content: flex-end;
+        text-align: right;
     }
 }

@@ -22,6 +22,7 @@ import { FeatureFlagsComponent } from './feature-flags/feature-flags.component';
 import { MatOptionModule } from '@angular/material/core';
 import { LoaderComponent } from './loader/loader.component';
 import { DeleteSettingDialogComponent } from './delete-setting-dialog/delete-setting-dialog.component';
+import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { DeleteSettingDialogComponent } from './delete-setting-dialog/delete-set
     AddFeatureFlagComponent,
     CreateFeatureFlagComponent,
     LoaderComponent,
-    DeleteSettingDialogComponent
+    DeleteSettingDialogComponent,
+    ViewerOnlyComponent
   ],
   imports: [
     BrowserModule,

@@ -1,9 +1,11 @@
 <app-loader *ngIf="loading"></app-loader>
 <div class="container" *ngIf="!loading" id="setting-item">
     <div class="auth">
-        Authorized as&nbsp;<b>{{authorizationParameters.email}}</b>
-        <br />
-        <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
+        <div>
+            Authorized as&nbsp;<b>{{authorizationParameters.email}}</b>
+            <br />
+            <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
+        </div>
     </div>
     <div class="actions" *ngIf="integrationLinkDetails && integrationLinkDetails.length">
         <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
@@ -30,5 +32,9 @@
             (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
             [showEnvironmentName]="true">
         </configcat-setting-item>
+    </div>
+
+    <div class="help">
+        Need help? Read more at &nbsp; <a href="https://configcat.com/docs/integrations/monday" target="_blank">the documentation</a>.
     </div>
 </div>

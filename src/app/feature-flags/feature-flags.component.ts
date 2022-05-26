@@ -24,13 +24,21 @@ export class FeatureFlagsComponent implements OnInit {
     private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    const params = this.mondayService.getAuthorizationParameters();
-    if (!params) {
-      this.redirectToAuth();
-      return;
-    }
-    this.authorizationParameters = params;
-    this.loadFeatureFlags();
+    this.mondayService.isViewOnly().then(isViewOnly => {
+      if (isViewOnly){
+        this.redirectToViewerOnly();
+        return;
+      }
+
+      const params = this.mondayService.getAuthorizationParameters();
+      if (!params) {
+        this.redirectToAuth();
+        return;
+      }
+      this.authorizationParameters = params;
+      this.loadFeatureFlags();
+    });
+
   }
 
   loadFeatureFlags() {
@@ -49,6 +57,10 @@ export class FeatureFlagsComponent implements OnInit {
 
   redirectToAuth() {
     this.router.navigate(['/authorize']);
+  }
+
+  redirectToViewerOnly() {
+    this.router.navigate(['/vieweronly']);
   }
 
   onDeleteSettingRequested(data: any) {

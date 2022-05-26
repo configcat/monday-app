@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import mondaySdk from "monday-sdk-js";
 import { LocalStorageService } from './localstorage-service';
+import jwt_decode from 'jwt-decode';
 const monday = mondaySdk();
 
 @Injectable({
@@ -40,6 +41,23 @@ export class MondayService {
 
     getContext(): Promise<any> {
         return monday.get("context");
+    }
+
+    isViewOnly(): Promise<boolean> {
+        return monday.get("sessionToken")
+            .then((sessionToken: any) => {
+                try {
+                    const decoded: any = jwt_decode(sessionToken);
+
+                    if (!decoded.hasOwnProperty('isViewOnly')) {
+                        return false;
+                    }
+
+                    return !!decoded['isViewOnly'];
+                } catch (error) {
+                    return false;
+                }
+            });
     }
 
     getSlug(itemId: any): Promise<any> {
