@@ -1,8 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
 import { PublicApiService } from 'ng-configcat-publicapi-ui';
+import { throwError } from 'rxjs';
 import { DeleteSettingDialogComponent } from '../delete-setting-dialog/delete-setting-dialog.component';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
@@ -25,7 +27,7 @@ export class FeatureFlagsComponent implements OnInit {
 
   ngOnInit(): void {
     this.mondayService.isViewOnly().then(isViewOnly => {
-      if (isViewOnly){
+      if (isViewOnly) {
         this.redirectToViewerOnly();
         return;
       }
@@ -50,6 +52,17 @@ export class FeatureFlagsComponent implements OnInit {
         .then((integrationLinkDetails) => {
           this.integrationLinkDetails = integrationLinkDetails?.details || [];
           this.loading = false;
+        })
+        .catch((error) => {
+          if (error instanceof HttpErrorResponse) {
+            if (((<HttpErrorResponse>error).status) === 401) {
+              this.mondayService.removeAuthorizationParameters();
+              this.redirectToAuth();
+              return;
+            }
+          }
+
+          return throwError(error);
         });
     });
 

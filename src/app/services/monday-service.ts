@@ -16,17 +16,22 @@ export class MondayService {
         private localStorageService: LocalStorageService) { }
 
     getAuthorizationParameters(): AuthorizationParameters | null {
-        const stored = this.localStorageService.getItem(this.authorizationkey);
-        if (!stored) {
-            return null;
+        try {
+            const stored = this.localStorageService.getItem(this.authorizationkey);
+            if (!stored) {
+                return null;
+            }
+            const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || '{}');
+            if (authorizationParameters
+                && authorizationParameters.basicAuthPassword && authorizationParameters.basicAuthUsername
+                && authorizationParameters.email && authorizationParameters.fullName) {
+                return authorizationParameters;
+            }
+            else {
+                return null;
+            }
         }
-        const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || '{}');
-        if (authorizationParameters
-            && authorizationParameters.basicAuthPassword && authorizationParameters.basicAuthUsername
-            && authorizationParameters.email && authorizationParameters.fullName) {
-            return authorizationParameters;
-        }
-        else {
+        catch {
             return null;
         }
     }
