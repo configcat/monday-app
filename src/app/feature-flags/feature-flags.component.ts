@@ -52,17 +52,6 @@ export class FeatureFlagsComponent implements OnInit {
         .then((integrationLinkDetails) => {
           this.integrationLinkDetails = integrationLinkDetails?.details || [];
           this.loading = false;
-        })
-        .catch((error) => {
-          if (error instanceof HttpErrorResponse) {
-            if (((<HttpErrorResponse>error).status) === 401) {
-              this.mondayService.removeAuthorizationParameters();
-              this.redirectToAuth();
-              return;
-            }
-          }
-
-          return throwError(error);
         });
     });
 

@@ -17,12 +17,13 @@ import { NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { MatDialogModule } from '@angular/material/dialog';
 import { environment } from './../environments/environment';
 import { CreateFeatureFlagComponent } from './create-feature-flag/create-feature-flag.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FeatureFlagsComponent } from './feature-flags/feature-flags.component';
 import { MatOptionModule } from '@angular/material/core';
 import { LoaderComponent } from './loader/loader.component';
 import { DeleteSettingDialogComponent } from './delete-setting-dialog/delete-setting-dialog.component';
 import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
+import { ForbiddenInterceptor } from './forbidden.interceptor';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,13 @@ import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
     MatTabsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ForbiddenInterceptor,
+      multi: true
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
