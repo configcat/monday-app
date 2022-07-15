@@ -24,6 +24,7 @@ export class ForbiddenInterceptor implements HttpInterceptor {
           if (error instanceof HttpErrorResponse) {
             switch ((<HttpErrorResponse>error).status) {
               case 401:
+                this.redirectToAuth();
                 return throwError(error);
               default:
                 return throwError(error);
