@@ -4,6 +4,7 @@ import { AddFeatureFlagComponent } from './add-feature-flag/add-feature-flag.com
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { CreateFeatureFlagComponent } from './create-feature-flag/create-feature-flag.component';
 import { FeatureFlagsComponent } from './feature-flags/feature-flags.component';
+import { UsageComponent } from './usage/usage.component';
 import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
 
 const routes: Routes = [
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'addfeatureflag', component: AddFeatureFlagComponent },
   { path: 'createfeatureflag', component: CreateFeatureFlagComponent },
   { path: 'vieweronly', component: ViewerOnlyComponent },
+  { path: 'usage', component: UsageComponent },
 ];
 
 @NgModule({

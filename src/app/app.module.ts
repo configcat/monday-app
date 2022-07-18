@@ -24,6 +24,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { DeleteSettingDialogComponent } from './delete-setting-dialog/delete-setting-dialog.component';
 import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
 import { ForbiddenInterceptor } from './forbidden.interceptor';
+import { UsageComponent } from './usage/usage.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ForbiddenInterceptor } from './forbidden.interceptor';
     CreateFeatureFlagComponent,
     LoaderComponent,
     DeleteSettingDialogComponent,
-    ViewerOnlyComponent
+    ViewerOnlyComponent,
+    UsageComponent
   ],
   imports: [
     BrowserModule,
