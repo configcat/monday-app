@@ -112,5 +112,7 @@
       }
     }
   },
-  "defaultProject": "monday"
+  "cli": {
+    "analytics": false
+  }
 }

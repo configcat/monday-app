@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IntegrationLinkType } from 'ng-configcat-publicapi';
 import { PublicApiService } from 'ng-configcat-publicapi-ui';
@@ -15,11 +15,11 @@ import { MondayService } from '../services/monday-service';
 export class AddFeatureFlagComponent implements OnInit {
 
   loading = true;
-  formGroup!: FormGroup;
+  formGroup!: UntypedFormGroup;
   authorizationParameters!: AuthorizationParameters | null;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private mondayService: MondayService,
     private publicApiService: PublicApiService,
     private router: Router) { }
