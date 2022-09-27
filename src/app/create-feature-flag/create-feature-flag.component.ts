@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { IntegrationLinkType, SettingType } from 'ng-configcat-publicapi';
 import { PublicApiService } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
+import { ErrorHandler } from '../services/error-handler';
 import { MondayService } from '../services/monday-service';
 
 @Component({
@@ -17,6 +18,7 @@ export class CreateFeatureFlagComponent implements OnInit {
   formGroup!: UntypedFormGroup;
   authorizationParameters!: AuthorizationParameters | null;
   SettingTypeEnum = SettingType;
+  ErrorHandler = ErrorHandler;
 
   constructor(
     private formBuilder: UntypedFormBuilder,
@@ -61,13 +63,13 @@ export class CreateFeatureFlagComponent implements OnInit {
             .toPromise()
             .then((setting: any) => {
               let url = '';
-              if (item?.id && item?.board?.id){
+              if (item?.id && item?.board?.id) {
                 url = this.mondayService.getParentOrigin();
-                if (url){
+                if (url) {
                   url += `/boards/${item.board.id}/pulses/${item.id}`;
                 }
               }
-              
+
               return this.publicApiService
                 .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
                 .addOrUpdateIntegrationLink(this.formGroup.value.environmentId, setting.settingId,
@@ -81,6 +83,7 @@ export class CreateFeatureFlagComponent implements OnInit {
         this.router.navigate(['/']);
       })
       .catch(error => {
+        ErrorHandler.handleErrors(this.formGroup, error);
         console.log(error);
       });
   }
