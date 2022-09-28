@@ -73,7 +73,7 @@ export class CreateFeatureFlagComponent implements OnInit {
               return this.publicApiService
                 .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
                 .addOrUpdateIntegrationLink(this.formGroup.value.environmentId, setting.settingId,
-                  IntegrationLinkType.Monday, item.itemId,
+                  IntegrationLinkType.Monday, item.id,
                   { description: item.name, url })
                 .toPromise();
             });
