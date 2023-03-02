@@ -3,7 +3,6 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { IntegrationLinkType } from 'ng-configcat-publicapi';
 import { PublicApiService } from 'ng-configcat-publicapi-ui';
-import { Subscription } from 'rxjs';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
 
@@ -49,9 +48,9 @@ export class AddFeatureFlagComponent implements OnInit {
       .then(
         item => {
           let url = '';
-          if (item?.id && item?.board?.id){
+          if (item?.id && item?.board?.id) {
             url = this.mondayService.getParentOrigin();
-            if (url){
+            if (url) {
               url += `/boards/${item.board.id}/pulses/${item.id}`;
             }
           }
