@@ -21,7 +21,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FeatureFlagsComponent } from './feature-flags/feature-flags.component';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { LoaderComponent } from './loader/loader.component';
-import { DeleteSettingDialogComponent } from './delete-setting-dialog/delete-setting-dialog.component';
 import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
 import { ForbiddenInterceptor } from './forbidden.interceptor';
 import { UsageComponent } from './usage/usage.component';
@@ -34,7 +33,6 @@ import { UsageComponent } from './usage/usage.component';
     AddFeatureFlagComponent,
     CreateFeatureFlagComponent,
     LoaderComponent,
-    DeleteSettingDialogComponent,
     ViewerOnlyComponent,
     UsageComponent
   ],

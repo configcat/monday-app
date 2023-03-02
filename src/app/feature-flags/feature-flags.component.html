@@ -28,13 +28,14 @@
             [productId]="integrationLinkDetail.product?.productId ?? ''"
             [configId]="integrationLinkDetail.config?.configId || ''"
             [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
-            [settingId]="integrationLinkDetail.setting?.settingId || 0" [canEditSetting]=false
+            [settingId]="integrationLinkDetail.setting?.settingId || 0"
             (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
             [showEnvironmentName]="true">
         </configcat-setting-item>
     </div>
 
     <div class="help">
-        Need help? Read more at &nbsp; <a href="https://configcat.com/docs/integrations/monday" target="_blank">the documentation</a>.
+        Need help? Read more at &nbsp; <a href="https://configcat.com/docs/integrations/monday" target="_blank">the
+            documentation</a>.
     </div>
 </div>
