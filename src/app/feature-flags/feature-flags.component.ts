@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
 import { DeleteSettingDialogComponent, PublicApiService } from 'ng-configcat-publicapi-ui';
