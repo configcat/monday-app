@@ -1,11 +1,8 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
-import { PublicApiService } from 'ng-configcat-publicapi-ui';
-import { throwError } from 'rxjs';
-import { DeleteSettingDialogComponent } from '../delete-setting-dialog/delete-setting-dialog.component';
+import { DeleteSettingDialogComponent, PublicApiService } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
 
@@ -66,11 +63,16 @@ export class FeatureFlagsComponent implements OnInit {
   }
 
   onDeleteSettingRequested(data: any) {
-    const dialogRef = this.dialog.open(DeleteSettingDialogComponent, { data: { settingName: data.setting.name } });
+    const dialogRef = this.dialog.open(DeleteSettingDialogComponent, {
+      data: {
+        system: "Monday",
+        ticketType: "item",
+      }
+    });
 
     dialogRef.afterClosed()
       .subscribe((result: any) => {
-        if (!result || result.button !== 'removeFromCard') {
+        if (!result || result.button !== 'remove') {
           return;
         }
         return this.mondayService.getContext().then(context => {
