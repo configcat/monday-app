@@ -8,8 +8,8 @@
         </div>
     </div>
     <div class="actions" *ngIf="integrationLinkDetails && integrationLinkDetails.length">
-        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
         <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
     </div>
     <div *ngIf="!integrationLinkDetails || !integrationLinkDetails.length" class="empty">
         <div class="text">
