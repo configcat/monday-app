@@ -13,7 +13,7 @@ export class MondayService {
     authorizationkey = 'configcat-auth';
 
     constructor(
-        private localStorageService: LocalStorageService) { }
+        private localStorageService: LocalStorageService) {}
 
     getAuthorizationParameters(): AuthorizationParameters | null {
         try {
@@ -66,12 +66,12 @@ export class MondayService {
     }
 
     getSlug(itemId: any): Promise<any> {
-        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`)
+        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: '2024-01'})
             .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
     }
 
     getItem(itemId: any): Promise<any> {
-        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`)
+        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: '2024-01'})
             .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
     }
 
