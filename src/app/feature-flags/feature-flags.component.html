@@ -23,7 +23,8 @@
         </div>
     </div>
     <div *ngFor="let integrationLinkDetail of integrationLinkDetails">
-        <configcat-setting-item [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+        <configcat-setting-item *ngIf="integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V1"
+            [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
             [productId]="integrationLinkDetail.product?.productId ?? ''"
             [configId]="integrationLinkDetail.config?.configId || ''"
@@ -32,6 +33,16 @@
             (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
             [showEnvironmentName]="true">
         </configcat-setting-item>
+        <configcat-feature-flag-item *ngIf="integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2"
+            [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+            [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+            [productId]="integrationLinkDetail.product?.productId ?? ''"
+            [configId]="integrationLinkDetail.config?.configId || ''"
+            [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
+            [settingId]="integrationLinkDetail.setting?.settingId || 0"
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
+            [showEnvironmentName]="true">
+        </configcat-feature-flag-item>
     </div>
 
     <div class="help">

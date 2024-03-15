@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
+import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
 import { DeleteSettingDialogComponent, PublicApiService } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
@@ -16,6 +16,7 @@ export class FeatureFlagsComponent implements OnInit {
   loading = true;
   authorizationParameters!: AuthorizationParameters;
   integrationLinkDetails!: IntegrationLinkDetail[];
+  EvaluationVersion = EvaluationVersion;
 
   constructor(private mondayService: MondayService,
     private router: Router,
