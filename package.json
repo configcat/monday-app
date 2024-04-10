@@ -20,8 +20,8 @@
     "@angular/router": "^17.3.3",
     "jwt-decode": "^3.1.2",
     "monday-sdk-js": "^0.5.3",
-    "ng-configcat-publicapi": "^4.3.0",
-    "ng-configcat-publicapi-ui": "^4.1.0",
+    "ng-configcat-publicapi": "^4.3.1",
+    "ng-configcat-publicapi-ui": "^4.1.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.4"
