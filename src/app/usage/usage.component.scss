@@ -1,7 +1,16 @@
 .container {
-    margin: 8px;
+    margin: auto;
+    width: 70%;
+    padding: 10px;
 
     img {
-        width: 640px;
+        max-width: 90%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    h1 {
+        text-align: center;
     }
 }
