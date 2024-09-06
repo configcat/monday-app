@@ -13,4 +13,5 @@ RUN npm run build
 
 FROM base as final
 COPY --from=builder /configcat-monday-app/dist/configcat-monday-app /usr/share/nginx/html
+COPY _headers /usr/share/nginx/html/
 CMD ["sh", "start.sh"]
