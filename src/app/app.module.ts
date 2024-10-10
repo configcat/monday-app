@@ -17,7 +17,7 @@ import { NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { MatDialogModule } from '@angular/material/dialog';
 import { environment } from './../environments/environment';
 import { CreateFeatureFlagComponent } from './create-feature-flag/create-feature-flag.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FeatureFlagsComponent } from './feature-flags/feature-flags.component';
 import { MatOptionModule } from '@angular/material/core';
 import { LoaderComponent } from './loader/loader.component';
@@ -25,41 +25,35 @@ import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
 import { ForbiddenInterceptor } from './forbidden.interceptor';
 import { UsageComponent } from './usage/usage.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    FeatureFlagsComponent,
-    AuthorizationComponent,
-    AddFeatureFlagComponent,
-    CreateFeatureFlagComponent,
-    LoaderComponent,
-    ViewerOnlyComponent,
-    UsageComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatButtonModule,
-    NgConfigCatPublicApiUIModule.forRoot(() => ({ basePath: environment.publicApiBaseUrl, dashboardBasePath: environment.dashboardBaseUrl })),
-    MatDialogModule,
-    MatFormFieldModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatInputModule,
-    MatTabsModule,
-    HttpClientModule
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ForbiddenInterceptor,
-      multi: true
-    },
-  ],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        FeatureFlagsComponent,
+        AuthorizationComponent,
+        AddFeatureFlagComponent,
+        CreateFeatureFlagComponent,
+        LoaderComponent,
+        ViewerOnlyComponent,
+        UsageComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatButtonModule,
+        NgConfigCatPublicApiUIModule.forRoot(() => ({ basePath: environment.publicApiBaseUrl, dashboardBasePath: environment.dashboardBaseUrl })),
+        MatDialogModule,
+        MatFormFieldModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatInputModule,
+        MatTabsModule], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: ForbiddenInterceptor,
+            multi: true
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+    ] })
 export class AppModule { }
