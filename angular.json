@@ -43,7 +43,8 @@
           "builder": "@angular/build:application",
           "options": {
             "outputPath": {
-              "base": "dist/configcat-monday-app"
+              "base": "dist/configcat-monday-app",
+               "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
