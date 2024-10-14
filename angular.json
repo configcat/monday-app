@@ -44,7 +44,7 @@
           "options": {
             "outputPath": {
               "base": "dist/configcat-monday-app",
-               "browser": ""
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
