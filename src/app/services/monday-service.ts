@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import mondaySdk from "monday-sdk-js";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { LocalStorageService } from "./localstorage-service";
@@ -53,7 +53,7 @@ export class MondayService {
         }
 
         try {
-          const decoded: any = jwt_decode(sessionToken.data);
+          const decoded: any = jwtDecode(sessionToken.data);
 
           return decoded?.dat?.is_view_only ?? false;
         } catch (error) {

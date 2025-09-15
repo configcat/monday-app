@@ -3,11 +3,11 @@ import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, RouterLink } from "@angular/router";
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "ng-configcat-publicapi";
-import { DeleteSettingDialogComponent, FeatureFlagItemComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
+import { DeleteSettingDialogComponent, DeleteSettingDialogData, DeleteSettingDialogResult, DeleteSettingModel, FeatureFlagItemComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
+import { firstValueFrom } from "rxjs";
 import { LoaderComponent } from "../loader/loader.component";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { MondayService } from "../services/monday-service";
-
 
 @Component({
   selector: "configcat-monday-feature-flags",
@@ -39,8 +39,8 @@ export class FeatureFlagsComponent implements OnInit {
         return;
       }
       this.authorizationParameters = params;
-      this.loadFeatureFlags();
-    });
+      void this.loadFeatureFlags();
+    }).catch((error: unknown) => { console.log(error); });
 
   }
 
@@ -49,8 +49,7 @@ export class FeatureFlagsComponent implements OnInit {
       this.publicApiService
         .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
         .getIntegrationLinkDetails(IntegrationLinkType.Monday, context?.data?.itemId || "1")
-        .toPromise()
-        .then((integrationLinkDetails) => {
+        .subscribe((integrationLinkDetails) => {
           this.integrationLinkDetails = integrationLinkDetails?.details || [];
           this.loading = false;
         });
@@ -59,15 +58,19 @@ export class FeatureFlagsComponent implements OnInit {
   }
 
   redirectToAuth() {
-    this.router.navigate(["/authorize"]);
+    void this.router.navigate(["/authorize"]);
   }
 
   redirectToViewerOnly() {
-    this.router.navigate(["/vieweronly"]);
+    void this.router.navigate(["/vieweronly"]);
   }
 
-  onDeleteSettingRequested(data: any) {
-    const dialogRef = this.dialog.open(DeleteSettingDialogComponent, {
+  onDeleteSettingRequested(data: DeleteSettingModel) {
+    const dialogRef = this.dialog.open<
+      DeleteSettingDialogComponent,
+      DeleteSettingDialogData,
+      DeleteSettingDialogResult
+    >(DeleteSettingDialogComponent, {
       data: {
         system: "Monday",
         ticketType: "item",
@@ -75,19 +78,22 @@ export class FeatureFlagsComponent implements OnInit {
     });
 
     dialogRef.afterClosed()
-      .subscribe((result: any) => {
+      .subscribe(result => {
         if (!result || result.button !== "remove") {
           return;
         }
-        return this.mondayService.getContext().then(context => {
-          this.publicApiService
-            .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-            .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Monday, context.data.itemId)
-            .toPromise()
-            .then(() => {
-              return this.loadFeatureFlags();
-            });
-        });
+        this.mondayService.getContext()
+          .then(context => {
+            return firstValueFrom(this.publicApiService
+              .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
+              .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Monday, context.data.itemId));
+          })
+          .then(() => {
+            return this.loadFeatureFlags();
+          })
+          .catch((error: unknown) => {
+            console.log(error);
+          });
       });
   }
 }

@@ -1,10 +1,10 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { Router, RouterLink } from "@angular/router";
+import { AuthorizationComponent } from "ng-configcat-publicapi-ui";
 import { LoaderComponent } from "../loader/loader.component";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { MondayService } from "../services/monday-service";
-import { AuthorizationComponent } from "ng-configcat-publicapi-ui";
 
 @Component({
   selector: "configcat-monday-authorization",
@@ -24,10 +24,10 @@ export class AuthComponent implements OnInit {
     this.loading = false;
   }
 
-  login(authorizationParameters: any) {
+  login(authorizationParameters: AuthorizationParameters) {
     this.mondayService.setAuthorizationParameters(authorizationParameters);
     this.mondayService.showSuccessMessage("Authorized to ConfigCat 🎉");
-    this.router.navigate(["/"]);
+    void this.router.navigate(["/"]);
   }
 
   unauthorize() {
@@ -35,7 +35,7 @@ export class AuthComponent implements OnInit {
     this.authorizationParameters = null;
   }
 
-  error(error: any) {
+  error(error: ErrorEvent) {
     console.log(error);
   }
 }

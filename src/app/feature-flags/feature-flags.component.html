@@ -13,17 +13,25 @@
     </div>
     @if (integrationLinkDetails && integrationLinkDetails.length) {
       <div class="actions">
-        <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
-        <button type="button" mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
+        <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">
+          Create and link feature flag
+        </button>
+        <button type="button" mat-stroked-button [routerLink]="['/addfeatureflag']">
+          Link additional feature flag
+        </button>
       </div>
     }
     @if (!integrationLinkDetails || !integrationLinkDetails.length) {
       <div class="empty">
         <div class="text">You have no linked feature flags.</div>
         <div class="buttons">
-          <button type="button" mat-flat-button color="primary" [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
+          <button type="button" mat-flat-button color="primary" [routerLink]="['/addfeatureflag']">
+            Link existing feature flag
+          </button>
           <span>or</span>
-          <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+          <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">
+            Create and link feature flag
+          </button>
         </div>
       </div>
     }

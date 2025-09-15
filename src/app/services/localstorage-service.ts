@@ -8,8 +8,9 @@ export class LocalStorageService {
   getItem(key: string): string | null {
     try {
       return localStorage.getItem(key);
-    } catch (e) {
-      if (this.inMemoryStorage.hasOwnProperty(key)) {
+    } catch (error: unknown) {
+      console.log(error);
+      if (Object.prototype.hasOwnProperty.call(this.inMemoryStorage, key)) {
         return this.inMemoryStorage[key];
       }
     }
@@ -19,7 +20,8 @@ export class LocalStorageService {
   setItem(key: string, value: string): void {
     try {
       return localStorage.setItem(key, value);
-    } catch (e) {
+    } catch (error: unknown) {
+      console.log(error);
       this.inMemoryStorage[key] = value;
     }
   }
@@ -27,7 +29,9 @@ export class LocalStorageService {
   removeItem(key: string): void {
     try {
       return localStorage.removeItem(key);
-    } catch (e) {
+    } catch (error: unknown) {
+      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
       delete this.inMemoryStorage[key];
     }
   }
