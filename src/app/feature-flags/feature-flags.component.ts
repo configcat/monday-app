@@ -7,9 +7,10 @@ import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
 
 @Component({
-  selector: 'app-feature-flags',
-  templateUrl: './feature-flags.component.html',
-  styleUrls: ['./feature-flags.component.scss']
+    selector: 'app-feature-flags',
+    templateUrl: './feature-flags.component.html',
+    styleUrls: ['./feature-flags.component.scss'],
+    standalone: false
 })
 export class FeatureFlagsComponent implements OnInit {
 

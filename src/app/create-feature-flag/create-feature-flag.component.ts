@@ -8,9 +8,10 @@ import { ErrorHandler } from '../services/error-handler';
 import { MondayService } from '../services/monday-service';
 
 @Component({
-  selector: 'app-create-feature-flag',
-  templateUrl: './create-feature-flag.component.html',
-  styleUrls: ['./create-feature-flag.component.scss']
+    selector: 'app-create-feature-flag',
+    templateUrl: './create-feature-flag.component.html',
+    styleUrls: ['./create-feature-flag.component.scss'],
+    standalone: false
 })
 export class CreateFeatureFlagComponent implements OnInit {
 

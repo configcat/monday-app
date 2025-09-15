@@ -4,9 +4,10 @@ import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
 
 @Component({
-  selector: 'app-authorization',
-  templateUrl: './authorization.component.html',
-  styleUrls: ['./authorization.component.scss']
+    selector: 'app-authorization',
+    templateUrl: './authorization.component.html',
+    styleUrls: ['./authorization.component.scss'],
+    standalone: false
 })
 export class AuthorizationComponent implements OnInit {
 
