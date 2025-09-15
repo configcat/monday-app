@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddFeatureFlagComponent } from './add-feature-flag/add-feature-flag.component';
-import { AuthorizationComponent } from './authorization/authorization.component';
-import { CreateFeatureFlagComponent } from './create-feature-flag/create-feature-flag.component';
-import { FeatureFlagsComponent } from './feature-flags/feature-flags.component';
-import { UsageComponent } from './usage/usage.component';
-import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
+
+
+
+
+
+
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', component: FeatureFlagsComponent },
-  { path: 'authorize', component: AuthorizationComponent },
-  { path: 'addfeatureflag', component: AddFeatureFlagComponent },
-  { path: 'createfeatureflag', component: CreateFeatureFlagComponent },
-  { path: 'vieweronly', component: ViewerOnlyComponent },
-  { path: 'usage', component: UsageComponent },
+  { path: '', pathMatch: 'full', loadComponent: () => import('./feature-flags/feature-flags.component').then(m => m.FeatureFlagsComponent) },
+  { path: 'authorize', loadComponent: () => import('./authorization/authorization.component').then(m => m.AuthorizationComponent) },
+  { path: 'addfeatureflag', loadComponent: () => import('./add-feature-flag/add-feature-flag.component').then(m => m.AddFeatureFlagComponent) },
+  { path: 'createfeatureflag', loadComponent: () => import('./create-feature-flag/create-feature-flag.component').then(m => m.CreateFeatureFlagComponent) },
+  { path: 'vieweronly', loadComponent: () => import('./viewer-only/viewer-only.component').then(m => m.ViewerOnlyComponent) },
+  { path: 'usage', loadComponent: () => import('./usage/usage.component').then(m => m.UsageComponent) },
 ];
 
 @NgModule({
