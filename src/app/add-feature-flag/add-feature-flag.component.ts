@@ -5,7 +5,7 @@ import { IntegrationLinkType } from 'ng-configcat-publicapi';
 import { PublicApiService, NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
-import { NgIf } from '@angular/common';
+
 import { LoaderComponent } from '../loader/loader.component';
 import { MatButton } from '@angular/material/button';
 
@@ -13,7 +13,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-add-feature-flag',
     templateUrl: './add-feature-flag.component.html',
     styleUrls: ['./add-feature-flag.component.scss'],
-    imports: [NgIf, LoaderComponent, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
+    imports: [LoaderComponent, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
 })
 export class AddFeatureFlagComponent implements OnInit {
 

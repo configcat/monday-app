@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
-import { NgIf } from '@angular/common';
+
 import { LoaderComponent } from '../loader/loader.component';
 import { NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { MatButton } from '@angular/material/button';
@@ -11,7 +11,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-authorization',
     templateUrl: './authorization.component.html',
     styleUrls: ['./authorization.component.scss'],
-    imports: [NgIf, LoaderComponent, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
+    imports: [LoaderComponent, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
 })
 export class AuthorizationComponent implements OnInit {
 

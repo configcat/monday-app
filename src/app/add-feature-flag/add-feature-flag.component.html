@@ -1,36 +1,48 @@
 <div class="container">
-    <h2 class="header">Link existing ConfigCat feature flag</h2>
-    <p>
-        The ConfigCat feature flag you select here will be linked to this monday item.
-    </p>
-    <app-loader *ngIf="loading"></app-loader>
-    <div *ngIf="!loading">
-        <form *ngIf="authorizationParameters" (ngSubmit)="add()" [formGroup]="formGroup" class="form">
-            <div>
-                <configcat-product-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [valueFormControl]="formGroup.controls['productId']" name="productId">
-                </configcat-product-select>
-                <configcat-config-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [productId]="formGroup.controls.productId.value" [valueFormControl]="formGroup.controls.configId"
-                    *ngIf="formGroup.controls.productId.value">
-                </configcat-config-select>
-                <configcat-environment-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [productId]="formGroup.controls.productId.value"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [valueFormControl]="formGroup.controls.environmentId" *ngIf="formGroup.controls.productId.value">
-                </configcat-environment-select>
-                <configcat-setting-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [configId]="formGroup.controls.configId.value"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [valueFormControl]="formGroup.controls.settingId" *ngIf="formGroup.controls.configId.value">
-                </configcat-setting-select>
-            </div>
-            <div class="buttons">
-                <button mat-flat-button color="primary" type="submit">Link</button>
-                <button mat-stroked-button type="button" [routerLink]="['/']">Go back</button>
-            </div>
+  <h2 class="header">Link existing ConfigCat feature flag</h2>
+  <p>
+    The ConfigCat feature flag you select here will be linked to this monday item.
+  </p>
+  @if (loading) {
+    <app-loader></app-loader>
+  }
+  @if (!loading) {
+    <div>
+      @if (authorizationParameters) {
+        <form (ngSubmit)="add()" [formGroup]="formGroup" class="form">
+          <div>
+            <configcat-product-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+              [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+              [valueFormControl]="formGroup.controls['productId']" name="productId">
+            </configcat-product-select>
+            @if (formGroup.controls.productId.value) {
+              <configcat-config-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+                [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+                [productId]="formGroup.controls.productId.value" [valueFormControl]="formGroup.controls.configId"
+                >
+              </configcat-config-select>
+            }
+            @if (formGroup.controls.productId.value) {
+              <configcat-environment-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+                [productId]="formGroup.controls.productId.value"
+                [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+                [valueFormControl]="formGroup.controls.environmentId">
+              </configcat-environment-select>
+            }
+            @if (formGroup.controls.configId.value) {
+              <configcat-setting-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+                [configId]="formGroup.controls.configId.value"
+                [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+                [valueFormControl]="formGroup.controls.settingId">
+              </configcat-setting-select>
+            }
+          </div>
+          <div class="buttons">
+            <button mat-flat-button color="primary" type="submit">Link</button>
+            <button mat-stroked-button type="button" [routerLink]="['/']">Go back</button>
+          </div>
         </form>
+      }
     </div>
+  }
 </div>

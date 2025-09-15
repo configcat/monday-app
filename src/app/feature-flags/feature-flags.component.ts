@@ -5,7 +5,7 @@ import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from 'n
 import { DeleteSettingDialogComponent, PublicApiService, NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
-import { NgIf, NgFor } from '@angular/common';
+
 import { LoaderComponent } from '../loader/loader.component';
 import { MatButton } from '@angular/material/button';
 
@@ -13,7 +13,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-feature-flags',
     templateUrl: './feature-flags.component.html',
     styleUrls: ['./feature-flags.component.scss'],
-    imports: [NgIf, LoaderComponent, RouterLink, MatButton, NgFor, NgConfigCatPublicApiUIModule]
+    imports: [LoaderComponent, RouterLink, MatButton, NgConfigCatPublicApiUIModule]
 })
 export class FeatureFlagsComponent implements OnInit {
 

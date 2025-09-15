@@ -6,7 +6,7 @@ import { PublicApiService, NgConfigCatPublicApiUIModule } from 'ng-configcat-pub
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { ErrorHandler } from '../services/error-handler';
 import { MondayService } from '../services/monday-service';
-import { NgIf } from '@angular/common';
+
 import { MatFormField, MatLabel, MatHint, MatError } from '@angular/material/form-field';
 import { MatSelect } from '@angular/material/select';
 import { MatOption } from '@angular/material/core';
@@ -17,7 +17,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-create-feature-flag',
     templateUrl: './create-feature-flag.component.html',
     styleUrls: ['./create-feature-flag.component.scss'],
-    imports: [NgIf, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatHint, MatError, MatButton, RouterLink]
+    imports: [FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatHint, MatError, MatButton, RouterLink]
 })
 export class CreateFeatureFlagComponent implements OnInit {
 
