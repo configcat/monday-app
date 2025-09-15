@@ -7,7 +7,7 @@ import { MatInput } from "@angular/material/input";
 import { MatSelect } from "@angular/material/select";
 import { Router, RouterLink } from "@angular/router";
 import { IntegrationLinkType, SettingType } from "ng-configcat-publicapi";
-import { ConfigSelectComponent, EnvironmentSelectComponent, ProductSelectComponent } from "ng-configcat-publicapi-ui";
+import { ConfigSelectComponent, EnvironmentSelectComponent, FormHelper, ProductSelectComponent, PublicApiService } from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
@@ -43,6 +43,7 @@ export class CreateFeatureFlagComponent implements OnInit {
   authorizationParameters!: AuthorizationParameters | null;
   SettingTypeEnum = SettingType;
   ErrorHandler = ErrorHandler;
+  FormHelper = FormHelper;
 
   ngOnInit(): void {
     this.loading = true;
