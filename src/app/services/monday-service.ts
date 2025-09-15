@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import mondaySdk from "monday-sdk-js";
 import { LocalStorageService } from './localstorage-service';
@@ -9,11 +9,10 @@ const monday = mondaySdk();
     providedIn: 'root'
 })
 export class MondayService {
+    private localStorageService = inject(LocalStorageService);
+
 
     authorizationkey = 'configcat-auth';
-
-    constructor(
-        private localStorageService: LocalStorageService) {}
 
     getAuthorizationParameters(): AuthorizationParameters | null {
         try {

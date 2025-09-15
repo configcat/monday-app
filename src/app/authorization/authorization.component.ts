@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
@@ -14,13 +14,12 @@ import { MatButton } from '@angular/material/button';
     imports: [LoaderComponent, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
 })
 export class AuthorizationComponent implements OnInit {
+  private mondayService = inject(MondayService);
+  private router = inject(Router);
+
 
   loading = true;
   authorizationParameters!: AuthorizationParameters | null;
-
-  constructor(
-    private mondayService: MondayService,
-    private router: Router) { }
 
   ngOnInit(): void {
     this.authorizationParameters = this.mondayService.getAuthorizationParameters();

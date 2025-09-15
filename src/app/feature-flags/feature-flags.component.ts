@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
@@ -16,16 +16,16 @@ import { MatButton } from '@angular/material/button';
     imports: [LoaderComponent, RouterLink, MatButton, NgConfigCatPublicApiUIModule]
 })
 export class FeatureFlagsComponent implements OnInit {
+  private mondayService = inject(MondayService);
+  private router = inject(Router);
+  private publicApiService = inject(PublicApiService);
+  private dialog = inject(MatDialog);
+
 
   loading = true;
   authorizationParameters!: AuthorizationParameters;
   integrationLinkDetails!: IntegrationLinkDetail[];
   EvaluationVersion = EvaluationVersion;
-
-  constructor(private mondayService: MondayService,
-    private router: Router,
-    private publicApiService: PublicApiService,
-    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.mondayService.isViewOnly().then(isViewOnly => {

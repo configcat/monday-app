@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { IntegrationLinkType } from 'ng-configcat-publicapi';
@@ -16,16 +16,15 @@ import { MatButton } from '@angular/material/button';
     imports: [LoaderComponent, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
 })
 export class AddFeatureFlagComponent implements OnInit {
+  private formBuilder = inject(UntypedFormBuilder);
+  private mondayService = inject(MondayService);
+  private publicApiService = inject(PublicApiService);
+  private router = inject(Router);
+
 
   loading = true;
   formGroup!: UntypedFormGroup;
   authorizationParameters!: AuthorizationParameters | null;
-
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private mondayService: MondayService,
-    private publicApiService: PublicApiService,
-    private router: Router) { }
 
   ngOnInit(): void {
     this.loading = true;
