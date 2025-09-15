@@ -4,33 +4,37 @@
   "compilerOptions": {
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
-    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
     "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
+    "declaration": false,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "sourceMap": true,
-    "declaration": false,
     "experimentalDecorators": true,
+    "module": "ES2022",
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "esModuleInterop": true,
-    "module": "es2020",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "skipLibCheck": true,
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["ES2022", "dom"],
     "useDefineForClassFields": false,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": false,
-    "allowSyntheticDefaultImports": true
+    "strictTemplates": true,
+    "strictStandalone": true,
+    "fullTemplateTypeCheck": true,
+    "extendedDiagnostics": {
+      "defaultCategory": "error"
+    }
   }
 }

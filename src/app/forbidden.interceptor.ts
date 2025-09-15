@@ -1,21 +1,20 @@
-import { Injectable, inject } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor, HttpErrorResponse } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
-import { MondayService } from './services/monday-service';
-import { Router } from '@angular/router';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { inject, Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { catchError, Observable, throwError } from "rxjs";
+import { MondayService } from "./services/monday-service";
 
 @Injectable()
 export class ForbiddenInterceptor implements HttpInterceptor {
-  private mondayService = inject(MondayService);
-  private router = inject(Router);
-
+  private readonly mondayService = inject(MondayService);
+  private readonly router = inject(Router);
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)
       .pipe(
         catchError(error => {
           if (error instanceof HttpErrorResponse) {
-            switch ((<HttpErrorResponse>error).status) {
+            switch ((error).status) {
               case 401:
                 this.redirectToAuth();
                 return throwError(error);
@@ -31,6 +30,6 @@ export class ForbiddenInterceptor implements HttpInterceptor {
 
   redirectToAuth() {
     this.mondayService.removeAuthorizationParameters();
-    this.router.navigate(['/authorize']);
+    this.router.navigate(["/authorize"]);
   }
 }

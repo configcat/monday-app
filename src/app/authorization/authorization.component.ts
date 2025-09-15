@@ -1,22 +1,20 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthorizationParameters } from '../models/authorization-parameters';
-import { MondayService } from '../services/monday-service';
-
-import { LoaderComponent } from '../loader/loader.component';
-import { NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
-import { MatButton } from '@angular/material/button';
+import { Component, inject, OnInit } from "@angular/core";
+import { MatButton } from "@angular/material/button";
+import { Router, RouterLink } from "@angular/router";
+import { NgConfigCatPublicApiUIModule } from "ng-configcat-publicapi-ui";
+import { LoaderComponent } from "../loader/loader.component";
+import { AuthorizationParameters } from "../models/authorization-parameters";
+import { MondayService } from "../services/monday-service";
 
 @Component({
-    selector: 'app-authorization',
-    templateUrl: './authorization.component.html',
-    styleUrls: ['./authorization.component.scss'],
-    imports: [LoaderComponent, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
+  selector: "app-authorization",
+  templateUrl: "./authorization.component.html",
+  styleUrls: ["./authorization.component.scss"],
+  imports: [LoaderComponent, NgConfigCatPublicApiUIModule, MatButton, RouterLink],
 })
 export class AuthorizationComponent implements OnInit {
-  private mondayService = inject(MondayService);
-  private router = inject(Router);
-
+  private readonly mondayService = inject(MondayService);
+  private readonly router = inject(Router);
 
   loading = true;
   authorizationParameters!: AuthorizationParameters | null;
@@ -28,8 +26,8 @@ export class AuthorizationComponent implements OnInit {
 
   login(authorizationParameters: any) {
     this.mondayService.setAuthorizationParameters(authorizationParameters);
-    this.mondayService.showSuccessMessage('Authorized to ConfigCat 🎉');
-    this.router.navigate(['/']);
+    this.mondayService.showSuccessMessage("Authorized to ConfigCat 🎉");
+    this.router.navigate(["/"]);
   }
 
   unauthorize() {

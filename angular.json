@@ -48,7 +48,7 @@
             },
             "index": "src/index.html",
             "polyfills": [
-              "src/polyfills.ts"
+              "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
@@ -123,6 +123,12 @@
           "options": {
             "buildTarget": "monday:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["**/*.ts", "**/*.html"]
+          }
         }
       }
     }
@@ -131,6 +137,12 @@
     "analytics": false
   },
   "schematics": {
+    "@angular-eslint/schematics:application": {
+      "setParserOptionsProject": true
+    },
+    "@angular-eslint/schematics:library": {
+      "setParserOptionsProject": true
+    },
     "@schematics/angular:component": {
       "type": "component"
     },

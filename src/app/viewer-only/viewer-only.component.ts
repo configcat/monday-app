@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from "@angular/core";
 
 @Component({
-    selector: 'app-viewer-only',
-    templateUrl: './viewer-only.component.html',
-    styleUrls: ['./viewer-only.component.scss']
+  selector: "app-viewer-only",
+  templateUrl: "./viewer-only.component.html",
+  styleUrls: ["./viewer-only.component.scss"],
 })
 export class ViewerOnlyComponent implements OnInit {
 

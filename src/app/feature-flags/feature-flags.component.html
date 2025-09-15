@@ -5,7 +5,8 @@
   <div class="container" id="setting-item">
     <div class="auth">
       <div>
-        Authorized as&nbsp;<b>{{authorizationParameters.email}}</b>
+        Authorized as&nbsp;
+        <b>{{ authorizationParameters.email }}</b>
         <br />
         <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
       </div>
@@ -18,13 +19,10 @@
     }
     @if (!integrationLinkDetails || !integrationLinkDetails.length) {
       <div class="empty">
-        <div class="text">
-          You have no linked feature flags.
-        </div>
+        <div class="text">You have no linked feature flags.</div>
         <div class="buttons">
-          <button mat-flat-button [routerLink]="['/addfeatureflag']" color="primary">Link existing feature
-          flag</button>
-          <span> or </span>
+          <button mat-flat-button color="primary" [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
+          <span>or</span>
           <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
         </div>
       </div>
@@ -33,33 +31,34 @@
       <div>
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V1) {
           <configcat-setting-item
+            deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
             [productId]="integrationLinkDetail.product?.productId ?? ''"
             [configId]="integrationLinkDetail.config?.configId || ''"
             [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
             [settingId]="integrationLinkDetail.setting?.settingId || 0"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
-            [showEnvironmentName]="true">
-          </configcat-setting-item>
+            [showEnvironmentName]="true"
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" />
         }
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2) {
           <configcat-feature-flag-item
+            deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
             [productId]="integrationLinkDetail.product?.productId ?? ''"
             [configId]="integrationLinkDetail.config?.configId || ''"
             [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
             [settingId]="integrationLinkDetail.setting?.settingId || 0"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
-            [showEnvironmentName]="true">
-          </configcat-feature-flag-item>
+            [showEnvironmentName]="true"
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" />
         }
       </div>
     }
     <div class="help">
-      Need help? Read more at &nbsp; <a href="https://configcat.com/docs/integrations/monday" target="_blank">the
-    documentation</a>.
+      Need help? Read more at &nbsp;
+      <a href="https://configcat.com/docs/integrations/monday" target="_blank">the documentation</a>
+      .
+    </div>
   </div>
-</div>
 }

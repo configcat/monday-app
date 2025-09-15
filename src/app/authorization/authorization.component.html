@@ -3,50 +3,58 @@
     <div class="tip">
       <h2>About ConfigCat</h2>
       <p class="desc">
-        <a href="https://configcat.com/" target="_blank">ConfigCat</a> is a feature
-        management
-        service. It allows you to turn ON/OFF features of your software using a visual dashboard.
+        <a href="https://configcat.com/" target="_blank">ConfigCat</a>
+        is a feature management service. It allows you to turn ON/OFF features of your software using a visual
+        dashboard.
+      </p>
+      <p class="desc">A tool created by developers for development teams with ❤️.</p>
+      <p class="desc">
+        Read more about ConfigCat at
+        <a href="https://configcat.com/" target="_blank">https://configcat.com</a>
+        .
       </p>
       <p class="desc">
-        A tool created by developers for development teams with ❤️.
+        Need help with the ConfigCat Feature Flags monday.com app? Read more at
+        <a href="https://configcat.com/docs/integrations/monday" target="_blank">the documentation</a>
+        .
       </p>
       <p class="desc">
-        Read more about ConfigCat at <a href="https://configcat.com/" target="_blank">https://configcat.com</a>.
+        New to ConfigCat?
+        <a href="https://app.configcat.com/signup" target="_blank">Sign up</a>
+        for a forever free account to get started.
       </p>
-      <p class="desc">
-        Need help with the ConfigCat Feature Flags monday.com app? Read more at <a href="https://configcat.com/docs/integrations/monday" target="_blank">the documentation</a>.
-      </p>
-      <p class="desc">
-        New to ConfigCat? <a href="https://app.configcat.com/signup" target="_blank">Sign
-      up</a> for a forever free account to get started.
-    </p>
-  </div>
-}
+    </div>
+  }
 
-<h2>Authorize ConfigCat Feature Flags</h2>
+  <h2>Authorize ConfigCat Feature Flags</h2>
 
-@if (loading) {
-  <app-loader></app-loader>
-}
-@if (!loading) {
-  <div>
-    @if (!authorizationParameters) {
-      <div>
-        <configcat-authorization (error)="error($event)" (authorized)="login($event)">
-        </configcat-authorization>
-      </div>
-    }
-    @if (authorizationParameters) {
-      <div class="unauthorize">
-        <h3>Authorized</h3>
-        <div>Email: <strong>{{authorizationParameters.email}}</strong></div>
-        <div>Basic auth user name: <strong>{{authorizationParameters.basicAuthUsername}}</strong></div>
-        <div class="actions">
-          <button mat-flat-button color="primary" (click)="unauthorize()">Unauthorize</button>
-          <button mat-stroked-button [routerLink]="['/']">Go back</button>
+  @if (loading) {
+    <app-loader />
+  }
+  @if (!loading) {
+    <div>
+      @if (!authorizationParameters) {
+        <div>
+          <configcat-authorization (error)="error($event)" (authorized)="login($event)" />
         </div>
-      </div>
-    }
-  </div>
-}
+      }
+      @if (authorizationParameters) {
+        <div class="unauthorize">
+          <h3>Authorized</h3>
+          <div>
+            Email:
+            <strong>{{ authorizationParameters.email }}</strong>
+          </div>
+          <div>
+            Basic auth user name:
+            <strong>{{ authorizationParameters.basicAuthUsername }}</strong>
+          </div>
+          <div class="actions">
+            <button mat-flat-button color="primary" (click)="unauthorize()">Unauthorize</button>
+            <button mat-stroked-button [routerLink]="['/']">Go back</button>
+          </div>
+        </div>
+      }
+    </div>
+  }
 </div>

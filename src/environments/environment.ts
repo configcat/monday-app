@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  publicApiBaseUrl: 'https://test-api.configcat.com',
-  dashboardBaseUrl: 'https://test-app.configcat.com',
+  publicApiBaseUrl: "https://test-api.configcat.com",
+  dashboardBaseUrl: "https://test-app.configcat.com",
 };
 
 /*

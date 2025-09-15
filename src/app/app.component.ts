@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-    selector: 'app-root',
-    template: `<router-outlet />`,
-    styles: [],
-    standalone: false
+  selector: "app-root",
+  template: "<router-outlet />",
+  styles: [],
 })
 export class AppComponent {
-  title = 'ConfigCat Feature Flags';
+  title = "ConfigCat Feature Flags";
 }
