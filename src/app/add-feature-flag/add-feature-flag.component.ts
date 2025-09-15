@@ -3,16 +3,26 @@ import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup,
 import { MatButton } from "@angular/material/button";
 import { Router, RouterLink } from "@angular/router";
 import { IntegrationLinkType } from "ng-configcat-publicapi";
-import { NgConfigCatPublicApiUIModule, PublicApiService } from "ng-configcat-publicapi-ui";
+import { ConfigSelectComponent, EnvironmentSelectComponent, ProductSelectComponent, PublicApiService, SettingSelectComponent } from "ng-configcat-publicapi-ui";
 import { LoaderComponent } from "../loader/loader.component";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { MondayService } from "../services/monday-service";
 
 @Component({
-  selector: "app-add-feature-flag",
+  selector: "configcat-monday-add-feature-flag",
   templateUrl: "./add-feature-flag.component.html",
   styleUrls: ["./add-feature-flag.component.scss"],
-  imports: [LoaderComponent, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatButton, RouterLink],
+  imports: [
+    LoaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButton,
+    RouterLink,
+    ProductSelectComponent,
+    SettingSelectComponent,
+    EnvironmentSelectComponent,
+    ConfigSelectComponent,
+  ],
 })
 export class AddFeatureFlagComponent implements OnInit {
   private readonly formBuilder = inject(UntypedFormBuilder);

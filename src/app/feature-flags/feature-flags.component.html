@@ -1,5 +1,5 @@
 @if (loading) {
-  <app-loader />
+  <configcat-monday-loader />
 }
 @if (!loading) {
   <div class="container" id="setting-item">
@@ -13,24 +13,24 @@
     </div>
     @if (integrationLinkDetails && integrationLinkDetails.length) {
       <div class="actions">
-        <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
-        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
+        <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+        <button type="button" mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
       </div>
     }
     @if (!integrationLinkDetails || !integrationLinkDetails.length) {
       <div class="empty">
         <div class="text">You have no linked feature flags.</div>
         <div class="buttons">
-          <button mat-flat-button color="primary" [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
+          <button type="button" mat-flat-button color="primary" [routerLink]="['/addfeatureflag']">Link existing feature flag</button>
           <span>or</span>
-          <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+          <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
         </div>
       </div>
     }
     @for (integrationLinkDetail of integrationLinkDetails; track integrationLinkDetail) {
       <div>
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V1) {
-          <configcat-setting-item
+          <app-setting-item
             deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
@@ -42,7 +42,7 @@
             (deleteSettingRequested)="onDeleteSettingRequested($event)" />
         }
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2) {
-          <configcat-feature-flag-item
+          <app-feature-flag-item
             deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"

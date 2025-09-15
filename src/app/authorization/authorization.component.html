@@ -29,13 +29,13 @@
   <h2>Authorize ConfigCat Feature Flags</h2>
 
   @if (loading) {
-    <app-loader />
+    <configcat-monday-loader />
   }
   @if (!loading) {
     <div>
       @if (!authorizationParameters) {
         <div>
-          <configcat-authorization (error)="error($event)" (authorized)="login($event)" />
+          <app-authorization (error)="error($event)" (authorized)="login($event)" />
         </div>
       }
       @if (authorizationParameters) {

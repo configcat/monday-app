@@ -3,16 +3,17 @@ import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, RouterLink } from "@angular/router";
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "ng-configcat-publicapi";
-import { DeleteSettingDialogComponent, NgConfigCatPublicApiUIModule, PublicApiService } from "ng-configcat-publicapi-ui";
+import { DeleteSettingDialogComponent, FeatureFlagItemComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
 import { LoaderComponent } from "../loader/loader.component";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { MondayService } from "../services/monday-service";
 
+
 @Component({
-  selector: "app-feature-flags",
+  selector: "configcat-monday-feature-flags",
   templateUrl: "./feature-flags.component.html",
   styleUrls: ["./feature-flags.component.scss"],
-  imports: [LoaderComponent, RouterLink, MatButton, NgConfigCatPublicApiUIModule],
+  imports: [LoaderComponent, RouterLink, MatButton, FeatureFlagItemComponent, SettingItemComponent],
 })
 export class FeatureFlagsComponent implements OnInit {
   private readonly mondayService = inject(MondayService);

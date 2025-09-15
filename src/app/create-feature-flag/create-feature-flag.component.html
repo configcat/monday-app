@@ -8,13 +8,13 @@
           <div>
             <h3 class="header small">1. Select the target location in ConfigCat</h3>
             <p>The feature flag will be created under the following product and config in ConfigCat.</p>
-            <configcat-product-select
+            <app-product-select
               name="productId"
               [basicAuthUsername]="authorizationParameters.basicAuthUsername"
               [basicAuthPassword]="authorizationParameters.basicAuthPassword"
               [valueFormControl]="formGroup.controls.productId" />
             @if (formGroup.controls.productId.value) {
-              <configcat-config-select
+              <app-config-select
                 [basicAuthUsername]="authorizationParameters.basicAuthUsername"
                 [basicAuthPassword]="authorizationParameters.basicAuthPassword"
                 [productId]="formGroup.controls.productId.value"
@@ -67,7 +67,7 @@
               feature flag value in that environment.
             </p>
             @if (formGroup.controls.productId.value) {
-              <configcat-environment-select
+              <app-environment-select
                 [basicAuthUsername]="authorizationParameters.basicAuthUsername"
                 [productId]="formGroup.controls.productId.value"
                 [basicAuthPassword]="authorizationParameters.basicAuthPassword"

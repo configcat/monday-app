@@ -7,16 +7,30 @@ import { MatInput } from "@angular/material/input";
 import { MatSelect } from "@angular/material/select";
 import { Router, RouterLink } from "@angular/router";
 import { IntegrationLinkType, SettingType } from "ng-configcat-publicapi";
-import { NgConfigCatPublicApiUIModule, PublicApiService } from "ng-configcat-publicapi-ui";
+import { ConfigSelectComponent, EnvironmentSelectComponent, ProductSelectComponent } from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
 
 @Component({
-  selector: "app-create-feature-flag",
+  selector: "configcat-monday-create-feature-flag",
   templateUrl: "./create-feature-flag.component.html",
   styleUrls: ["./create-feature-flag.component.scss"],
-  imports: [FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatHint, MatError, MatButton, RouterLink],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    MatOption,
+    MatInput,
+    MatHint,
+    MatError,
+    MatButton,
+    RouterLink,
+    ConfigSelectComponent,
+    ProductSelectComponent,
+    EnvironmentSelectComponent],
 })
 export class CreateFeatureFlagComponent implements OnInit {
   private readonly formBuilder = inject(UntypedFormBuilder);
