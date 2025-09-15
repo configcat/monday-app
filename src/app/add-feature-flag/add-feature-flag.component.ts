@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { IntegrationLinkType } from 'ng-configcat-publicapi';
-import { PublicApiService } from 'ng-configcat-publicapi-ui';
+import { PublicApiService, NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
+import { NgIf } from '@angular/common';
+import { LoaderComponent } from '../loader/loader.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-add-feature-flag',
     templateUrl: './add-feature-flag.component.html',
     styleUrls: ['./add-feature-flag.component.scss'],
-    standalone: false
+    imports: [NgIf, LoaderComponent, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatButton, RouterLink]
 })
 export class AddFeatureFlagComponent implements OnInit {
 

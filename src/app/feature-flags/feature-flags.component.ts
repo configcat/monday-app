@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from 'ng-configcat-publicapi';
-import { DeleteSettingDialogComponent, PublicApiService } from 'ng-configcat-publicapi-ui';
+import { DeleteSettingDialogComponent, PublicApiService, NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { MondayService } from '../services/monday-service';
+import { NgIf, NgFor } from '@angular/common';
+import { LoaderComponent } from '../loader/loader.component';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-feature-flags',
     templateUrl: './feature-flags.component.html',
     styleUrls: ['./feature-flags.component.scss'],
-    standalone: false
+    imports: [NgIf, LoaderComponent, RouterLink, MatButton, NgFor, NgConfigCatPublicApiUIModule]
 })
 export class FeatureFlagsComponent implements OnInit {
 

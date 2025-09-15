@@ -1,17 +1,23 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { UntypedFormGroup, UntypedFormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { IntegrationLinkType, SettingType } from 'ng-configcat-publicapi';
-import { PublicApiService } from 'ng-configcat-publicapi-ui';
+import { PublicApiService, NgConfigCatPublicApiUIModule } from 'ng-configcat-publicapi-ui';
 import { AuthorizationParameters } from '../models/authorization-parameters';
 import { ErrorHandler } from '../services/error-handler';
 import { MondayService } from '../services/monday-service';
+import { NgIf } from '@angular/common';
+import { MatFormField, MatLabel, MatHint, MatError } from '@angular/material/form-field';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/core';
+import { MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-create-feature-flag',
     templateUrl: './create-feature-flag.component.html',
     styleUrls: ['./create-feature-flag.component.scss'],
-    standalone: false
+    imports: [NgIf, FormsModule, ReactiveFormsModule, NgConfigCatPublicApiUIModule, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatHint, MatError, MatButton, RouterLink]
 })
 export class CreateFeatureFlagComponent implements OnInit {
 

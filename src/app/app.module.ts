@@ -25,16 +25,7 @@ import { ViewerOnlyComponent } from './viewer-only/viewer-only.component';
 import { ForbiddenInterceptor } from './forbidden.interceptor';
 import { UsageComponent } from './usage/usage.component';
 
-@NgModule({ declarations: [
-        AppComponent,
-        FeatureFlagsComponent,
-        AuthorizationComponent,
-        AddFeatureFlagComponent,
-        CreateFeatureFlagComponent,
-        LoaderComponent,
-        ViewerOnlyComponent,
-        UsageComponent
-    ],
+@NgModule({ declarations: [AppComponent],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         BrowserAnimationsModule,
@@ -48,7 +39,14 @@ import { UsageComponent } from './usage/usage.component';
         MatOptionModule,
         MatSelectModule,
         MatInputModule,
-        MatTabsModule], providers: [
+        MatTabsModule, 
+        FeatureFlagsComponent,
+        AuthorizationComponent,
+        AddFeatureFlagComponent,
+        CreateFeatureFlagComponent,
+        LoaderComponent,
+        ViewerOnlyComponent,
+        UsageComponent], providers: [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: ForbiddenInterceptor,
