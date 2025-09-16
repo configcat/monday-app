@@ -12,17 +12,12 @@ export class ForbiddenInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(request)
       .pipe(
-        catchError(error => {
-          if (error instanceof HttpErrorResponse) {
-            switch ((error).status) {
-              case 401:
-                this.redirectToAuth();
-                return throwError(error);
-              default:
-                return throwError(error);
-            }
+        catchError((error: Error) => {
+          if (error instanceof HttpErrorResponse && error.status === 401) {
+            this.redirectToAuth();
+            return throwError(() => error);
           } else {
-            return throwError(error);
+            return throwError(() => error);
           }
         })
       );
@@ -30,6 +25,6 @@ export class ForbiddenInterceptor implements HttpInterceptor {
 
   redirectToAuth() {
     this.mondayService.removeAuthorizationParameters();
-    this.router.navigate(["/authorize"]);
+    void this.router.navigate(["/authorize"]);
   }
 }

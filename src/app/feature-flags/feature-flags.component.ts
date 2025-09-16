@@ -48,7 +48,7 @@ export class FeatureFlagsComponent implements OnInit {
     return this.mondayService.getContext().then(context => {
       this.publicApiService
         .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-        .getIntegrationLinkDetails(IntegrationLinkType.Monday, context?.data?.itemId || "1")
+        .getIntegrationLinkDetails(IntegrationLinkType.Monday, String(context.itemId) || "1")
         .subscribe((integrationLinkDetails) => {
           this.integrationLinkDetails = integrationLinkDetails?.details || [];
           this.loading = false;
@@ -86,7 +86,7 @@ export class FeatureFlagsComponent implements OnInit {
           .then(context => {
             return firstValueFrom(this.publicApiService
               .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-              .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Monday, context.data.itemId));
+              .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Monday, String(context.itemId)));
           })
           .then(() => {
             return this.loadFeatureFlags();

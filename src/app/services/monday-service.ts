@@ -1,7 +1,9 @@
 import { inject, Injectable } from "@angular/core";
 import { jwtDecode } from "jwt-decode";
 import mondaySdk from "monday-sdk-js";
+import { BaseContext } from "monday-sdk-js/types/client-context.type";
 import { AuthorizationParameters } from "../models/authorization-parameters";
+import { QueryItem, QueryItems } from "../models/query-item";
 import { LocalStorageService } from "./localstorage-service";
 
 const monday = mondaySdk();
@@ -20,9 +22,8 @@ export class MondayService {
       if (!stored) {
         return null;
       }
-      const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || "{}");
-      if (authorizationParameters
-                && authorizationParameters.basicAuthPassword && authorizationParameters.basicAuthUsername
+      const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || "{}") as AuthorizationParameters;
+      if (authorizationParameters?.basicAuthPassword && authorizationParameters.basicAuthUsername
                 && authorizationParameters.email && authorizationParameters.fullName) {
         return authorizationParameters;
       } else {
@@ -41,39 +42,57 @@ export class MondayService {
     this.localStorageService.removeItem(this.authorizationkey);
   }
 
-  getContext(): Promise<any> {
-    return monday.get("context");
+  getContext(): Promise<BaseContext & {
+    workspaceId: number;
+    boardId: number;
+    boardIds: [number];
+    itemId: number;
+    instanceId: number;
+    instanceType: string;
+  }> {
+    return monday.get("context", { appFeatureType: "AppFeatureItemView" }).then(result => {
+      return Promise.resolve(result.data);
+    });
   }
 
   isViewOnly(): Promise<boolean> {
     return monday.get("sessionToken")
-      .then((sessionToken: any) => {
+      .then((sessionToken) => {
         if (!sessionToken?.data) {
           return false;
         }
 
         try {
-          const decoded: any = jwtDecode(sessionToken.data);
+          const decoded = jwtDecode<
+            {
+              "exp": string;
+              "dat": {
+                "account_id": number;
+                "user_id": number;
+                "is_view_only": boolean;
+              };
+            }>(sessionToken.data);
 
-          return decoded?.dat?.is_view_only ?? false;
-        } catch (error) {
+          return decoded.dat.is_view_only ?? false;
+        } catch (error: unknown) {
+          console.log(error);
           return false;
         }
       });
   }
 
-  getSlug(itemId: any): Promise<any> {
+  getSlug(itemId: number): Promise<QueryItem | null> {
     return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: "2024-01" })
-      .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
+      .then((res: { data: QueryItems; account_id: number }) => res.data.items.length ? res.data.items[0] : null);
   }
 
-  getItem(itemId: any): Promise<any> {
-    return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: "2024-01" })
-      .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
+  getItem(itemId: number): Promise<QueryItem> {
+    return monday.api<QueryItems>(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: "2024-01" })
+      .then((res: { data: QueryItems; account_id: number }) => res.data.items[0]);
   }
 
   showSuccessMessage(message: string) {
-    monday.execute("notice", {
+    void monday.execute("notice", {
       message: message,
       type: "success",
       timeout: 2000,
@@ -82,7 +101,7 @@ export class MondayService {
 
   getParentOrigin() {
     const locationAreDisctint = (window.location !== window.parent.location);
-    const parentOrigin = "" + ((locationAreDisctint ? document.referrer : document.location) || "");
+    const parentOrigin = ((locationAreDisctint ? document.referrer : document.location.href) || "");
 
     if (parentOrigin) {
       return new URL(parentOrigin).origin;
@@ -90,7 +109,7 @@ export class MondayService {
 
     const currentLocation = document.location;
 
-    if (currentLocation.ancestorOrigins && currentLocation.ancestorOrigins.length) {
+    if (currentLocation.ancestorOrigins?.length) {
       return currentLocation.ancestorOrigins[0];
     }
 

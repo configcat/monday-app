@@ -50,8 +50,8 @@
             <strong>{{ authorizationParameters.basicAuthUsername }}</strong>
           </div>
           <div class="actions">
-            <button mat-flat-button color="primary" (click)="unauthorize()">Unauthorize</button>
-            <button mat-stroked-button [routerLink]="['/']">Go back</button>
+            <button type="button" color="primary" (click)="unauthorize()">Unauthorize</button>
+            <button type="button" mat-stroked-button [routerLink]="['/']">Go back</button>
           </div>
         </div>
       }

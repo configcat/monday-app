@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, OnInit } from "@angular/core";
 import { FormControl, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButton } from "@angular/material/button";
@@ -89,7 +90,7 @@ export class CreateFeatureFlagComponent implements OnInit {
     }
 
     this.mondayService.getContext()
-      .then(context => this.mondayService.getItem(context.data.itemId))
+      .then(context => this.mondayService.getItem(context.itemId))
       .then(
         item => {
           return this.publicApiService
@@ -100,28 +101,42 @@ export class CreateFeatureFlagComponent implements OnInit {
               name: this.formGroup.controls.name.value,
               hint: this.formGroup.controls.hint.value,
             })
-            .toPromise()
-            .then((setting: any) => {
-              let url = "";
-              if (item?.id && item?.board?.id) {
-                url = this.mondayService.getParentOrigin();
-                if (url) {
-                  url += `/boards/${item.board.id}/pulses/${item.id}`;
+            .subscribe({
+              next: setting => {
+                let url = "";
+                if (item?.id && item?.board?.id) {
+                  url = this.mondayService.getParentOrigin();
+                  if (url) {
+                    url += `/boards/${item.board.id}/pulses/${item.id}`;
+                  }
                 }
-              }
 
-              return this.publicApiService
-                .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
-                .addOrUpdateIntegrationLink(this.formGroup.value.environmentId, setting.settingId,
-                  IntegrationLinkType.Monday, item.id,
-                  { description: item.name, url })
-                .toPromise();
+                return this.publicApiService
+                  .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
+                  .addOrUpdateIntegrationLink(this.formGroup.controls.environmentId.value, setting.settingId,
+                    IntegrationLinkType.Monday, item.id,
+                    { description: item.name, url })
+                  .subscribe({
+                    next: () => {
+                      void this.router.navigate(["/"]);
+                    },
+                    error: (error: Error) => {
+                      if (error instanceof HttpErrorResponse && error?.status === 409) {
+                        this.formGroup.setErrors({ serverSide: "Integration link already exists." });
+                      } else {
+                        ErrorHandler.handleErrors(this.formGroup, error);
+                      }
+                      console.log(error);
+                    },
+                  });
+              },
+              error: (error: Error) => {
+                ErrorHandler.handleErrors(this.formGroup, error);
+                console.log(error);
+              },
             });
         }
       )
-      .then(() => {
-        void this.router.navigate(["/"]);
-      })
       .catch((error: unknown) => {
         ErrorHandler.handleErrors(this.formGroup, error as Error);
         console.log(error);

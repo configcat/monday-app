@@ -42,10 +42,10 @@
             deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-            [productId]="integrationLinkDetail.product?.productId ?? ''"
-            [configId]="integrationLinkDetail.config?.configId || ''"
-            [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
-            [settingId]="integrationLinkDetail.setting?.settingId || 0"
+            [productId]="integrationLinkDetail.product.productId"
+            [configId]="integrationLinkDetail.config.configId"
+            [environmentId]="integrationLinkDetail.environment.environmentId"
+            [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
             (deleteSettingRequested)="onDeleteSettingRequested($event)" />
         }
@@ -54,10 +54,10 @@
             deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-            [productId]="integrationLinkDetail.product?.productId ?? ''"
-            [configId]="integrationLinkDetail.config?.configId || ''"
-            [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
-            [settingId]="integrationLinkDetail.setting?.settingId || 0"
+            [productId]="integrationLinkDetail.product.productId"
+            [configId]="integrationLinkDetail.config.configId"
+            [environmentId]="integrationLinkDetail.environment.environmentId"
+            [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
             (deleteSettingRequested)="onDeleteSettingRequested($event)" />
         }

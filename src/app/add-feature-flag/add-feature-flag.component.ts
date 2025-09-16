@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, OnInit } from "@angular/core";
 import { FormControl, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButton } from "@angular/material/button";
@@ -69,7 +70,7 @@ export class AddFeatureFlagComponent implements OnInit {
     }
 
     this.mondayService.getContext()
-      .then(context => this.mondayService.getItem(context.data.itemId))
+      .then(context => this.mondayService.getItem(context.itemId))
       .then(
         item => {
           let url = "";
@@ -80,17 +81,26 @@ export class AddFeatureFlagComponent implements OnInit {
             }
           }
 
-          return this.publicApiService
+          this.publicApiService
             .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
             .addOrUpdateIntegrationLink(this.formGroup.controls.environmentId.value, this.formGroup.controls.settingId.value,
-              IntegrationLinkType.Monday, item.id,
-              { description: item.name, url })
-            .toPromise();
+              IntegrationLinkType.Monday, item?.id,
+              { description: item?.name, url })
+            .subscribe({
+              next: () => {
+                void this.router.navigate(["/"]);
+              },
+              error: (error: Error) => {
+                if (error instanceof HttpErrorResponse && error?.status === 409) {
+                  this.formGroup.setErrors({ serverSide: "Integration link already exists." });
+                } else {
+                  ErrorHandler.handleErrors(this.formGroup, error);
+                }
+                console.log(error);
+              },
+            });
         }
       )
-      .then(() => {
-        void this.router.navigate(["/"]);
-      })
       .catch((error: unknown) => {
         ErrorHandler.handleErrors(this.formGroup, error as Error);
         console.log(error);
