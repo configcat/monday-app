@@ -13,14 +13,17 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly mondayService = inject(MondayService);
 
   title = "ConfigCat Feature Flags";
-  themeChangeListenerUnsubscribe!: () => void;
+  themeChangeListenerUnsubscribe?: () => void;
 
   ngOnInit(): void {
     this.themeChangeListenerUnsubscribe = this.mondayService.listenThemeChange();
   }
 
   ngOnDestroy(): void {
-    this.themeChangeListenerUnsubscribe();
+    if (this.themeChangeListenerUnsubscribe) {
+      this.themeChangeListenerUnsubscribe();
+    }
+
   }
 
 }
