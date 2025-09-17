@@ -118,8 +118,8 @@ export class MondayService {
     return "";
   }
 
-  listenThemeChange() {
-    monday.listen("context", res => {
+  listenThemeChange(): () => void {
+    return monday.listen("context", res => {
       const contextTheme = res.data.theme === "light" ? Theme.Light : Theme.Dark;
       const appTheme = this.themeService.isDark() ? Theme.Dark : Theme.Light;
       if (appTheme !== contextTheme) {

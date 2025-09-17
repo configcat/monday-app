@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { MondayService } from "./services/monday-service";
 
@@ -8,14 +8,19 @@ import { MondayService } from "./services/monday-service";
   styleUrls: ["./app.component.scss"],
   imports: [RouterModule],
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
   private readonly mondayService = inject(MondayService);
 
   title = "ConfigCat Feature Flags";
+  themeChangeListenerUnsubscribe!: () => void;
 
   ngOnInit(): void {
-    this.mondayService.listenThemeChange();
+    this.themeChangeListenerUnsubscribe = this.mondayService.listenThemeChange();
+  }
+
+  ngOnDestroy(): void {
+    this.themeChangeListenerUnsubscribe();
   }
 
 }
