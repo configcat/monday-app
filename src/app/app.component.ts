@@ -1,6 +1,6 @@
-import { Component, ElementRef, inject, OnInit, viewChild } from "@angular/core";
+import { Component, inject, OnInit} from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { Theme, ThemeService } from "ng-configcat-publicapi-ui";
+import { MondayService } from "./services/monday-service";
 
 @Component({
   selector: "configcat-monday-root",
@@ -10,27 +10,12 @@ import { Theme, ThemeService } from "ng-configcat-publicapi-ui";
 })
 export class AppComponent implements OnInit {
 
-  private readonly themeService = inject(ThemeService);
-  readonly resizeReference = viewChild<ElementRef<HTMLElement>>("resizeReference");
+  private readonly mondayService = inject(MondayService);
 
   title = "ConfigCat Feature Flags";
 
   ngOnInit(): void {
-    const darkModeOn =
-    window.matchMedia
-    && window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-    // If dark mode is enabled then directly switch to the dark-theme
-    if (darkModeOn) {
-      this.themeService.setTheme(Theme.Dark);
-    }
-
-    window
-      .matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", (e) => {
-        const turnOn = e.matches;
-        this.themeService.setTheme(turnOn ? Theme.Dark : Theme.Light);
-      });
+    this.mondayService.listenThemeChange();
   }
 
 }

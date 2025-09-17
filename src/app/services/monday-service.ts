@@ -2,6 +2,7 @@ import { inject, Injectable } from "@angular/core";
 import { jwtDecode } from "jwt-decode";
 import mondaySdk from "monday-sdk-js";
 import { BaseContext } from "monday-sdk-js/types/client-context.type";
+import { Theme, ThemeService } from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { QueryItem, QueryItems } from "../models/query-item";
 import { LocalStorageService } from "./localstorage-service";
@@ -13,6 +14,7 @@ const monday = mondaySdk();
 })
 export class MondayService {
   private readonly localStorageService = inject(LocalStorageService);
+  private readonly themeService = inject(ThemeService);
 
   authorizationkey = "configcat-auth";
 
@@ -114,5 +116,15 @@ export class MondayService {
     }
 
     return "";
+  }
+
+  listenThemeChange() {
+    monday.listen("context", res => {
+      const contextTheme = res.data.theme === "light" ? Theme.Light : Theme.Dark;
+      const appTheme = this.themeService.isDark() ? Theme.Dark : Theme.Light;
+      if (appTheme !== contextTheme) {
+        this.themeService.setTheme(contextTheme);
+      }
+    });
   }
 }
