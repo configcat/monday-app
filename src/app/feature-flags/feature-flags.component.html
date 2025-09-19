@@ -1,52 +1,72 @@
-<app-loader *ngIf="loading"></app-loader>
-<div class="container" *ngIf="!loading" id="setting-item">
+@if (loading) {
+  <configcat-monday-loader />
+}
+@if (!loading) {
+  <div class="container" id="setting-item">
     <div class="auth">
-        <div>
-            Authorized as&nbsp;<b>{{authorizationParameters.email}}</b>
-            <br />
-            <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
-        </div>
+      <div>
+        Authorized as&nbsp;
+        <b>{{ authorizationParameters.email }}</b>
+        <br />
+        <a class="link" [routerLink]="['/authorize']">Unauthorize</a>
+      </div>
     </div>
-    <div class="actions" *ngIf="integrationLinkDetails && integrationLinkDetails.length">
-        <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
-        <button mat-stroked-button [routerLink]="['/addfeatureflag']">Link additional feature flag</button>
-    </div>
-    <div *ngIf="!integrationLinkDetails || !integrationLinkDetails.length" class="empty">
-        <div class="text">
-            You have no linked feature flags.
-        </div>
+    @if (integrationLinkDetails && integrationLinkDetails.length) {
+      <div class="actions">
+        <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">
+          Create and link feature flag
+        </button>
+        <button type="button" mat-stroked-button [routerLink]="['/addfeatureflag']">
+          Link additional feature flag
+        </button>
+      </div>
+    }
+    @if (!integrationLinkDetails || !integrationLinkDetails.length) {
+      <div class="empty">
+        <div class="text">You have no linked feature flags.</div>
         <div class="buttons">
-            <button mat-flat-button [routerLink]="['/addfeatureflag']" color="primary">Link existing feature
-                flag</button>
-            <span> or </span>
-            <button mat-stroked-button [routerLink]="['/createfeatureflag']">Create and link feature flag</button>
+          <button type="button" mat-flat-button color="primary" [routerLink]="['/addfeatureflag']">
+            Link existing feature flag
+          </button>
+          <span>or</span>
+          <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">
+            Create and link feature flag
+          </button>
         </div>
-    </div>
-    <div *ngFor="let integrationLinkDetail of integrationLinkDetails">
-        <configcat-setting-item *ngIf="integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V1"
+      </div>
+    }
+    @for (integrationLinkDetail of integrationLinkDetails; track integrationLinkDetail) {
+      <div>
+        @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V1) {
+          <app-setting-item
+            deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-            [productId]="integrationLinkDetail.product?.productId ?? ''"
-            [configId]="integrationLinkDetail.config?.configId || ''"
-            [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
-            [settingId]="integrationLinkDetail.setting?.settingId || 0"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
-            [showEnvironmentName]="true">
-        </configcat-setting-item>
-        <configcat-feature-flag-item *ngIf="integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2"
+            [productId]="integrationLinkDetail.product.productId"
+            [configId]="integrationLinkDetail.config.configId"
+            [environmentId]="integrationLinkDetail.environment.environmentId"
+            [settingId]="integrationLinkDetail.setting.settingId"
+            [showEnvironmentName]="true"
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" />
+        }
+        @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2) {
+          <app-feature-flag-item
+            deleteSettingText="Unlink"
             [basicAuthUsername]="authorizationParameters.basicAuthUsername"
             [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-            [productId]="integrationLinkDetail.product?.productId ?? ''"
-            [configId]="integrationLinkDetail.config?.configId || ''"
-            [environmentId]="integrationLinkDetail.environment?.environmentId || ''"
-            [settingId]="integrationLinkDetail.setting?.settingId || 0"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" deleteSettingText="Unlink"
-            [showEnvironmentName]="true">
-        </configcat-feature-flag-item>
-    </div>
-
+            [productId]="integrationLinkDetail.product.productId"
+            [configId]="integrationLinkDetail.config.configId"
+            [environmentId]="integrationLinkDetail.environment.environmentId"
+            [settingId]="integrationLinkDetail.setting.settingId"
+            [showEnvironmentName]="true"
+            (deleteSettingRequested)="onDeleteSettingRequested($event)" />
+        }
+      </div>
+    }
     <div class="help">
-        Need help? Read more at &nbsp; <a href="https://configcat.com/docs/integrations/monday" target="_blank">the
-            documentation</a>.
+      Need help? Read more at &nbsp;
+      <a href="https://configcat.com/docs/integrations/monday" target="_blank">the documentation</a>
+      .
     </div>
-</div>
+  </div>
+}

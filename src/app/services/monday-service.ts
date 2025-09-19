@@ -1,102 +1,130 @@
-import { Injectable } from '@angular/core';
-import { AuthorizationParameters } from '../models/authorization-parameters';
+import { inject, Injectable } from "@angular/core";
+import { jwtDecode } from "jwt-decode";
 import mondaySdk from "monday-sdk-js";
-import { LocalStorageService } from './localstorage-service';
-import jwt_decode from 'jwt-decode';
+import { BaseContext } from "monday-sdk-js/types/client-context.type";
+import { Theme, ThemeService } from "ng-configcat-publicapi-ui";
+import { AuthorizationParameters } from "../models/authorization-parameters";
+import { QueryItem, QueryItems } from "../models/query-item";
+import { LocalStorageService } from "./localstorage-service";
+
 const monday = mondaySdk();
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root",
 })
 export class MondayService {
+  private readonly localStorageService = inject(LocalStorageService);
+  private readonly themeService = inject(ThemeService);
 
-    authorizationkey = 'configcat-auth';
+  authorizationkey = "configcat-auth";
 
-    constructor(
-        private localStorageService: LocalStorageService) {}
-
-    getAuthorizationParameters(): AuthorizationParameters | null {
-        try {
-            const stored = this.localStorageService.getItem(this.authorizationkey);
-            if (!stored) {
-                return null;
-            }
-            const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || '{}');
-            if (authorizationParameters
-                && authorizationParameters.basicAuthPassword && authorizationParameters.basicAuthUsername
+  getAuthorizationParameters(): AuthorizationParameters | null {
+    try {
+      const stored = this.localStorageService.getItem(this.authorizationkey);
+      if (!stored) {
+        return null;
+      }
+      const authorizationParameters: AuthorizationParameters = JSON.parse(atob(stored) || "{}") as AuthorizationParameters;
+      if (authorizationParameters?.basicAuthPassword && authorizationParameters.basicAuthUsername
                 && authorizationParameters.email && authorizationParameters.fullName) {
-                return authorizationParameters;
-            }
-            else {
-                return null;
-            }
-        }
-        catch {
-            return null;
-        }
+        return authorizationParameters;
+      } else {
+        return null;
+      }
+    } catch {
+      return null;
     }
+  }
 
-    setAuthorizationParameters(authorizationParameters: AuthorizationParameters) {
-        this.localStorageService.setItem(this.authorizationkey, btoa(JSON.stringify(authorizationParameters)));
-    }
+  setAuthorizationParameters(authorizationParameters: AuthorizationParameters) {
+    this.localStorageService.setItem(this.authorizationkey, btoa(JSON.stringify(authorizationParameters)));
+  }
 
-    removeAuthorizationParameters() {
-        this.localStorageService.removeItem(this.authorizationkey);
-    }
+  removeAuthorizationParameters() {
+    this.localStorageService.removeItem(this.authorizationkey);
+  }
 
-    getContext(): Promise<any> {
-        return monday.get("context");
-    }
+  getContext(): Promise<BaseContext & {
+    workspaceId: number;
+    boardId: number;
+    boardIds: [number];
+    itemId: number;
+    instanceId: number;
+    instanceType: string;
+  }> {
+    return monday.get("context", { appFeatureType: "AppFeatureItemView" }).then(result => {
+      return Promise.resolve(result.data);
+    });
+  }
 
-    isViewOnly(): Promise<boolean> {
-        return monday.get("sessionToken")
-            .then((sessionToken: any) => {
-                if (!sessionToken?.data) {
-                    return false;
-                }
-
-                try {
-                    const decoded: any = jwt_decode(sessionToken.data);
-
-                    return decoded?.dat?.is_view_only ?? false;
-                } catch (error) {
-                    return false;
-                }
-            });
-    }
-
-    getSlug(itemId: any): Promise<any> {
-        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: '2024-01'})
-            .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
-    }
-
-    getItem(itemId: any): Promise<any> {
-        return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: '2024-01'})
-            .then((res: any) => res?.data?.items?.length ? res.data.items[0] : null);
-    }
-
-    showSuccessMessage(message: string) {
-        monday.execute("notice", {
-            message: message,
-            type: 'success',
-            timeout: 2000,
-        });
-    }
-
-    getParentOrigin() {
-        const locationAreDisctint = (window.location !== window.parent.location);
-        const parentOrigin = '' + ((locationAreDisctint ? document.referrer : document.location) || '');
-
-        if (parentOrigin) {
-            return new URL(parentOrigin).origin;
+  isViewOnly(): Promise<boolean> {
+    return monday.get("sessionToken")
+      .then((sessionToken) => {
+        if (!sessionToken?.data) {
+          return false;
         }
 
-        const currentLocation = document.location;
+        try {
+          const decoded = jwtDecode<
+            {
+              "exp": string;
+              "dat": {
+                "account_id": number;
+                "user_id": number;
+                "is_view_only": boolean;
+              };
+            }>(sessionToken.data);
 
-        if (currentLocation.ancestorOrigins && currentLocation.ancestorOrigins.length) {
-            return currentLocation.ancestorOrigins[0];
+          return decoded.dat.is_view_only ?? false;
+        } catch (error: unknown) {
+          console.log(error);
+          return false;
         }
+      });
+  }
 
-        return '';
+  getSlug(itemId: number): Promise<QueryItem | null> {
+    return monday.api(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: "2024-01" })
+      .then((res: { data: QueryItems; account_id: number }) => res.data.items.length ? res.data.items[0] : null);
+  }
+
+  getItem(itemId: number): Promise<QueryItem> {
+    return monday.api<QueryItems>(`query { items (ids: [${itemId}]) { id, board {id}, name }}`, { apiVersion: "2024-01" })
+      .then((res: { data: QueryItems; account_id: number }) => res.data.items[0]);
+  }
+
+  showSuccessMessage(message: string) {
+    void monday.execute("notice", {
+      message: message,
+      type: "success",
+      timeout: 2000,
+    });
+  }
+
+  getParentOrigin() {
+    const locationAreDisctint = (window.location !== window.parent.location);
+    const parentOrigin = ((locationAreDisctint ? document.referrer : document.location.href) || "");
+
+    if (parentOrigin) {
+      return new URL(parentOrigin).origin;
     }
+
+    const currentLocation = document.location;
+
+    if (currentLocation.ancestorOrigins?.length) {
+      return currentLocation.ancestorOrigins[0];
+    }
+
+    return "";
+  }
+
+  listenThemeChange(): () => void {
+    return monday.listen("context", res => {
+      const contextTheme = res.data.theme === "light" ? Theme.Light : Theme.Dark;
+      const appTheme = this.themeService.isDark() ? Theme.Dark : Theme.Light;
+      if (appTheme !== contextTheme) {
+        this.themeService.setTheme(contextTheme);
+      }
+    });
+  }
 }

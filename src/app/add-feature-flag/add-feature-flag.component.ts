@@ -1,42 +1,68 @@
-import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { IntegrationLinkType } from 'ng-configcat-publicapi';
-import { PublicApiService } from 'ng-configcat-publicapi-ui';
-import { AuthorizationParameters } from '../models/authorization-parameters';
-import { MondayService } from '../services/monday-service';
+import { HttpErrorResponse } from "@angular/common/http";
+import { Component, inject, OnInit } from "@angular/core";
+import { FormControl, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
+import { MatButton } from "@angular/material/button";
+import { Router, RouterLink } from "@angular/router";
+import { IntegrationLinkType } from "ng-configcat-publicapi";
+import { ConfigSelectComponent, EnvironmentSelectComponent, ProductSelectComponent, PublicApiService, SettingSelectComponent } from "ng-configcat-publicapi-ui";
+import { LoaderComponent } from "../loader/loader.component";
+import { AuthorizationParameters } from "../models/authorization-parameters";
+import { ErrorHandler } from "../services/error-handler";
+import { MondayService } from "../services/monday-service";
 
 @Component({
-  selector: 'app-add-feature-flag',
-  templateUrl: './add-feature-flag.component.html',
-  styleUrls: ['./add-feature-flag.component.scss']
+  selector: "configcat-monday-add-feature-flag",
+  templateUrl: "./add-feature-flag.component.html",
+  styleUrls: ["./add-feature-flag.component.scss"],
+  imports: [
+    LoaderComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButton,
+    RouterLink,
+    ProductSelectComponent,
+    SettingSelectComponent,
+    EnvironmentSelectComponent,
+    ConfigSelectComponent,
+  ],
 })
 export class AddFeatureFlagComponent implements OnInit {
+  private readonly formBuilder = inject(NonNullableFormBuilder);
+  private readonly mondayService = inject(MondayService);
+  private readonly publicApiService = inject(PublicApiService);
+  private readonly router = inject(Router);
 
   loading = true;
-  formGroup!: UntypedFormGroup;
-  authorizationParameters!: AuthorizationParameters | null;
+  formGroup = this.formBuilder.group({
+    productId: new FormControl<string>("", {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    environmentId: new FormControl<string>("", {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    configId: new FormControl<string>("", {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+    settingId: new FormControl<number>(0, {
+      nonNullable: true,
+      validators: [Validators.required],
+    }),
+  });
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private mondayService: MondayService,
-    private publicApiService: PublicApiService,
-    private router: Router) { }
+  authorizationParameters!: AuthorizationParameters | null;
+  ErrorHandler = ErrorHandler;
 
   ngOnInit(): void {
     this.loading = true;
     this.authorizationParameters = null;
-    this.formGroup = this.formBuilder.group({
-      productId: [null, [Validators.required]],
-      configId: [null, [Validators.required]],
-      environmentId: [null, [Validators.required]],
-      settingId: [null, [Validators.required]]
-    });
+    this.formGroup.reset();
 
     this.authorizationParameters = this.mondayService.getAuthorizationParameters();
     this.loading = false;
   }
-
 
   add() {
     if (!this.formGroup.valid) {
@@ -44,10 +70,10 @@ export class AddFeatureFlagComponent implements OnInit {
     }
 
     this.mondayService.getContext()
-      .then(context => this.mondayService.getItem(context.data.itemId))
+      .then(context => this.mondayService.getItem(context.itemId))
       .then(
         item => {
-          let url = '';
+          let url = "";
           if (item?.id && item?.board?.id) {
             url = this.mondayService.getParentOrigin();
             if (url) {
@@ -55,18 +81,28 @@ export class AddFeatureFlagComponent implements OnInit {
             }
           }
 
-          return this.publicApiService
+          this.publicApiService
             .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
-            .addOrUpdateIntegrationLink(this.formGroup.value.environmentId, this.formGroup.value.settingId,
-              IntegrationLinkType.Monday, item.id,
-              { description: item.name, url })
-            .toPromise();
+            .addOrUpdateIntegrationLink(this.formGroup.controls.environmentId.value, this.formGroup.controls.settingId.value,
+              IntegrationLinkType.Monday, item?.id,
+              { description: item?.name, url })
+            .subscribe({
+              next: () => {
+                void this.router.navigate(["/"]);
+              },
+              error: (error: Error) => {
+                if (error instanceof HttpErrorResponse && error?.status === 409) {
+                  this.formGroup.setErrors({ serverSide: "Integration link already exists." });
+                } else {
+                  ErrorHandler.handleErrors(this.formGroup, error);
+                }
+                console.log(error);
+              },
+            });
         }
       )
-      .then(() => {
-        this.router.navigate(['/']);
-      })
-      .catch(error => {
+      .catch((error: unknown) => {
+        ErrorHandler.handleErrors(this.formGroup, error as Error);
         console.log(error);
       });
   }

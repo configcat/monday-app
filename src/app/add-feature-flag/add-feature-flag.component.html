@@ -1,36 +1,52 @@
 <div class="container">
-    <h2 class="header">Link existing ConfigCat feature flag</h2>
-    <p>
-        The ConfigCat feature flag you select here will be linked to this monday item.
-    </p>
-    <app-loader *ngIf="loading"></app-loader>
-    <div *ngIf="!loading">
-        <form *ngIf="authorizationParameters" (ngSubmit)="add()" [formGroup]="formGroup" class="form">
-            <div>
-                <configcat-product-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [valueFormControl]="formGroup.controls['productId']" name="productId">
-                </configcat-product-select>
-                <configcat-config-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [productId]="formGroup.controls.productId.value" [valueFormControl]="formGroup.controls.configId"
-                    *ngIf="formGroup.controls.productId.value">
-                </configcat-config-select>
-                <configcat-environment-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [productId]="formGroup.controls.productId.value"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [valueFormControl]="formGroup.controls.environmentId" *ngIf="formGroup.controls.productId.value">
-                </configcat-environment-select>
-                <configcat-setting-select [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-                    [configId]="formGroup.controls.configId.value"
-                    [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-                    [valueFormControl]="formGroup.controls.settingId" *ngIf="formGroup.controls.configId.value">
-                </configcat-setting-select>
+  <h2 class="header">Link existing ConfigCat feature flag</h2>
+  <p>The ConfigCat feature flag you select here will be linked to this monday item.</p>
+  @if (loading) {
+    <configcat-monday-loader />
+  }
+  @if (!loading) {
+    <div>
+      @if (authorizationParameters) {
+        <form class="form" [formGroup]="formGroup" (ngSubmit)="add()">
+          <div>
+            <app-product-select
+              name="productId"
+              [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+              [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+              [valueFormControl]="formGroup.controls['productId']" />
+            @if (formGroup.controls.productId.value) {
+              <app-config-select
+                [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+                [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+                [productId]="formGroup.controls.productId.value"
+                [valueFormControl]="formGroup.controls.configId" />
+            }
+            @if (formGroup.controls.productId.value) {
+              <app-environment-select
+                [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+                [productId]="formGroup.controls.productId.value"
+                [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+                [valueFormControl]="formGroup.controls.environmentId" />
+            }
+            @if (formGroup.controls.configId.value) {
+              <app-setting-select
+                [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+                [configId]="formGroup.controls.configId.value"
+                [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+                [valueFormControl]="formGroup.controls.settingId" />
+            }
+          </div>
+          @if (formGroup.errors && formGroup.errors["serverSide"]) {
+            <div class="error">
+              <span>{{ formGroup.errors["serverSide"] }}</span>
             </div>
-            <div class="buttons">
-                <button mat-flat-button color="primary" type="submit">Link</button>
-                <button mat-stroked-button type="button" [routerLink]="['/']">Go back</button>
-            </div>
+          }
+          <div class="buttons">
+            <button mat-flat-button color="primary" type="submit">Link</button>
+            <button mat-stroked-button type="button" [routerLink]="['/']">Go back</button>
+          </div>
         </form>
+      }
     </div>
+  }
 </div>

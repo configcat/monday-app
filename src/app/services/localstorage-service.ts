@@ -1,34 +1,38 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: "root" })
 export class LocalStorageService {
 
-    inMemoryStorage: { [key: string]: string } = {};
+  inMemoryStorage: Record<string, string> = {};
 
-    getItem(key: string): string | null {
-        try {
-            return localStorage.getItem(key);
-        } catch (e) {
-            if (this.inMemoryStorage.hasOwnProperty(key)) {
-                return this.inMemoryStorage[key];
-            }
-        }
-        return null;
+  getItem(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch (error: unknown) {
+      console.log(error);
+      if (Object.prototype.hasOwnProperty.call(this.inMemoryStorage, key)) {
+        return this.inMemoryStorage[key];
+      }
     }
+    return null;
+  }
 
-    setItem(key: string, value: string): void {
-        try {
-            return localStorage.setItem(key, value);
-        } catch (e) {
-            this.inMemoryStorage[key] = value;
-        }
+  setItem(key: string, value: string): void {
+    try {
+      return localStorage.setItem(key, value);
+    } catch (error: unknown) {
+      console.log(error);
+      this.inMemoryStorage[key] = value;
     }
+  }
 
-    removeItem(key: string): void {
-        try {
-            return localStorage.removeItem(key);
-        } catch (e) {
-            delete this.inMemoryStorage[key];
-        }
+  removeItem(key: string): void {
+    try {
+      return localStorage.removeItem(key);
+    } catch (error: unknown) {
+      console.log(error);
+      // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
+      delete this.inMemoryStorage[key];
     }
+  }
 }
