@@ -13,11 +13,11 @@
     </div>
     @if (integrationLinkDetails && integrationLinkDetails.length) {
       <div class="actions">
-        <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">
-          Create and link feature flag
-        </button>
         <button type="button" mat-stroked-button [routerLink]="['/addfeatureflag']">
           Link additional feature flag
+        </button>
+        <button type="button" mat-stroked-button [routerLink]="['/createfeatureflag']">
+          Create and link feature flag
         </button>
       </div>
     }
