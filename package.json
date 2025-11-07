@@ -22,8 +22,8 @@
     "@angular/router": "^20.3.3",
     "jwt-decode": "^4.0.0",
     "monday-sdk-js": "^0.5.6",
-    "ng-configcat-publicapi": "^5.0.3",
-    "ng-configcat-publicapi-ui": "^5.0.4",
+    "ng-configcat-publicapi": "^5.1.0",
+    "ng-configcat-publicapi-ui": "file:../ng-configcat-publicapi-ui/dist/ng-configcat-publicapi-ui",
     "rxjs": "~7.8.1",
     "tslib": "^2.8.1",
     "zone.js": "~0.15.1"
@@ -32,6 +32,7 @@
     "@angular/build": "^20.3.4",
     "@angular/cli": "^20.3.4",
     "@angular/compiler-cli": "^20.3.3",
+    "@configcat/sdk": "^1.0.2",
     "@rxweb/reactive-form-validators": "^13.0.1",
     "@smarttools/eslint-plugin-rxjs": "^1.0.20",
     "@stylistic/eslint-plugin": "^4.4.1",

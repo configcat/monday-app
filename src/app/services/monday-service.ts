@@ -101,6 +101,14 @@ export class MondayService {
     });
   }
 
+  showErrorMessage(message: string) {
+    void monday.execute("notice", {
+      message: message,
+      type: "error",
+      timeout: 2000,
+    });
+  }
+
   getParentOrigin() {
     const locationAreDisctint = (window.location !== window.parent.location);
     const parentOrigin = ((locationAreDisctint ? document.referrer : document.location.href) || "");

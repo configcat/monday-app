@@ -1,32 +1,4 @@
-.container {
-    margin: 16px;
-
-    .header {
-        font-size: large;
-        margin-top: 16px;
-    }
-
-    .form {
-        .container {
-
-            >* {
-                width: 100%;
-            }
-        }
-
-        .error {
-            color: var(--flag-validation-error);
-            margin: 0 5px 5px 5px;
-        }
-    }
-
-    
-
-    .buttons {
-        margin-bottom: 16px;
-
-        >* {
-            margin-right: 16px;
-        }
-    }
+.header {
+    font-size: large;
+    margin-top: 16px;
 }
