@@ -1,6 +1,8 @@
 <div class="container">
-  <h2 class="header">Create & Link ConfigCat Feature Flag</h2>
-  <p>The ConfigCat feature flag you create here will be linked to this monday item.</p>
+  <div class="header">
+    <h2>Create & Link ConfigCat Feature Flag</h2>
+    <p>The ConfigCat feature flag you create here will be linked to this monday item.</p>
+  </div>
   @if (!loading) {
     <div>
       @if (authorizationParameters) {
@@ -10,7 +12,14 @@
           (createInitiated)="add($event)"
           cancelButtonLabel="Go back"
           (cancelInitiated)="cancel()"
-          [hideCancelButton]="false" />
+          [hideCancelButton]="false"
+          targetSectionHeader="Select the target location in ConfigCat"
+          targetSectionDescription="The feature flag will be created under the following product and config in ConfigCat."
+          flagkSectionHeader="Set feature flag properties"
+          flagSectionDescription="The feature flag will be created with the following properties in ConfigCat."
+          linkSectionHeader="Link ConfigCat environment"
+          linkSectionDescription="This monday item will be linked to the following environment in ConfigCat. So it will display/set the
+              feature flag value in that environment." />
       }
     </div>
   }
