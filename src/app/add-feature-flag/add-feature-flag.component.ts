@@ -2,8 +2,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { IntegrationLinkType } from "ng-configcat-publicapi";
-import { LinkFeatureFlagComponent, LinkFeatureFlagParameters, PublicApiService } from "ng-configcat-publicapi-ui";
-import { LoaderComponent } from "../loader/loader.component";
+import { LinkFeatureFlagComponent, LinkFeatureFlagParameters, LoaderComponent, PublicApiService } from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
@@ -13,8 +12,8 @@ import { MondayService } from "../services/monday-service";
   templateUrl: "./add-feature-flag.component.html",
   styleUrls: ["./add-feature-flag.component.scss"],
   imports: [
-    LoaderComponent,
     LinkFeatureFlagComponent,
+    LoaderComponent,
   ],
 })
 export class AddFeatureFlagComponent implements OnInit {

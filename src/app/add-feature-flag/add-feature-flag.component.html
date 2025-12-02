@@ -2,7 +2,7 @@
   <h2 class="header">Link existing ConfigCat feature flag</h2>
   <p>The ConfigCat feature flag you select here will be linked to this monday item.</p>
   @if (loading) {
-    <configcat-monday-loader />
+    <app-loader />
   }
   @if (!loading) {
     <app-link-feature-flag

@@ -8,7 +8,8 @@
       @if (authorizationParameters) {
         <app-create-feature-flag
           createButtonLabel="Create and link"
-          [authorizationParameters]="authorizationParameters"
+          [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+          [basicAuthPassword]="authorizationParameters.basicAuthPassword"
           (createInitiated)="add($event)"
           cancelButtonLabel="Go back"
           (cancelInitiated)="cancel()"
