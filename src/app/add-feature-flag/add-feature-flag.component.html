@@ -8,10 +8,9 @@
     <app-link-feature-flag
       addButtonLabel="Link"
       cancelButtonLabel="Go back"
-      (cancelInitiated)="cancel()"
       [hideCancelButton]="false"
       [authorizationParameters]="authorizationParameters"
-      (linkInitiated)="add($event)"
-    />
+      (cancelInitiated)="cancel()"
+      (linkInitiated)="add($event)" />
   }
 </div>

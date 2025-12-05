@@ -47,7 +47,7 @@
             [environmentId]="integrationLinkDetail.environment.environmentId"
             [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" 
+            (deleteSettingRequested)="onDeleteSettingRequested($event)"
             (saveFailed)="saveFailed()" />
         }
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2) {

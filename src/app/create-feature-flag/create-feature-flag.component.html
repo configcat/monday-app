@@ -8,19 +8,19 @@
       @if (authorizationParameters) {
         <app-create-feature-flag
           createButtonLabel="Create and link"
-          [basicAuthUsername]="authorizationParameters.basicAuthUsername"
-          [basicAuthPassword]="authorizationParameters.basicAuthPassword"
-          (createInitiated)="add($event)"
           cancelButtonLabel="Go back"
-          (cancelInitiated)="cancel()"
-          [hideCancelButton]="false"
           targetSectionHeader="Select the target location in ConfigCat"
           targetSectionDescription="The feature flag will be created under the following product and config in ConfigCat."
           flagkSectionHeader="Set feature flag properties"
           flagSectionDescription="The feature flag will be created with the following properties in ConfigCat."
           linkSectionHeader="Link ConfigCat environment"
           linkSectionDescription="This monday item will be linked to the following environment in ConfigCat. So it will display/set the
-              feature flag value in that environment." />
+              feature flag value in that environment."
+          [basicAuthUsername]="authorizationParameters.basicAuthUsername"
+          [basicAuthPassword]="authorizationParameters.basicAuthPassword"
+          [hideCancelButton]="false"
+          (createInitiated)="add($event)"
+          (cancelInitiated)="cancel()" />
       }
     </div>
   }
