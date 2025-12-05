@@ -1,8 +1,7 @@
 import { Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { Router, RouterLink } from "@angular/router";
-import { AuthorizationComponent } from "ng-configcat-publicapi-ui";
-import { LoaderComponent } from "../loader/loader.component";
+import { AuthorizationComponent, LoaderComponent } from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { MondayService } from "../services/monday-service";
 

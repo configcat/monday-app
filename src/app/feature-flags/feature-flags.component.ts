@@ -3,9 +3,8 @@ import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, RouterLink } from "@angular/router";
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "ng-configcat-publicapi";
-import { DeleteSettingDialogComponent, DeleteSettingDialogData, DeleteSettingDialogResult, DeleteSettingModel, FeatureFlagItemComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
+import { DeleteSettingDialogComponent, DeleteSettingDialogData, DeleteSettingDialogResult, DeleteSettingModel, FeatureFlagItemComponent, LoaderComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
 import { firstValueFrom } from "rxjs";
-import { LoaderComponent } from "../loader/loader.component";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { MondayService } from "../services/monday-service";
 
@@ -13,7 +12,7 @@ import { MondayService } from "../services/monday-service";
   selector: "configcat-monday-feature-flags",
   templateUrl: "./feature-flags.component.html",
   styleUrls: ["./feature-flags.component.scss"],
-  imports: [LoaderComponent, RouterLink, MatButton, FeatureFlagItemComponent, SettingItemComponent],
+  imports: [RouterLink, MatButton, FeatureFlagItemComponent, SettingItemComponent, LoaderComponent],
 })
 export class FeatureFlagsComponent implements OnInit {
   private readonly mondayService = inject(MondayService);
@@ -95,5 +94,9 @@ export class FeatureFlagsComponent implements OnInit {
             console.log(error);
           });
       });
+  }
+
+  saveFailed() {
+    void this.loadFeatureFlags();
   }
 }

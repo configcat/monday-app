@@ -1,5 +1,5 @@
 @if (loading) {
-  <configcat-monday-loader />
+  <app-loader />
 }
 @if (!loading) {
   <div class="container" id="setting-item">
@@ -47,7 +47,8 @@
             [environmentId]="integrationLinkDetail.environment.environmentId"
             [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" />
+            (deleteSettingRequested)="onDeleteSettingRequested($event)"
+            (saveFailed)="saveFailed()" />
         }
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2) {
           <app-feature-flag-item
@@ -59,7 +60,8 @@
             [environmentId]="integrationLinkDetail.environment.environmentId"
             [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
-            (deleteSettingRequested)="onDeleteSettingRequested($event)" />
+            (deleteSettingRequested)="onDeleteSettingRequested($event)"
+            (saveFailed)="saveFailed()" />
         }
       </div>
     }

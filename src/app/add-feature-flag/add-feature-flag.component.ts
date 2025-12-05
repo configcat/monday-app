@@ -1,11 +1,8 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, OnInit } from "@angular/core";
-import { FormControl, FormsModule, NonNullableFormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
-import { MatButton } from "@angular/material/button";
-import { Router, RouterLink } from "@angular/router";
+import { Router } from "@angular/router";
 import { IntegrationLinkType } from "ng-configcat-publicapi";
-import { ConfigSelectComponent, EnvironmentSelectComponent, ProductSelectComponent, PublicApiService, SettingSelectComponent } from "ng-configcat-publicapi-ui";
-import { LoaderComponent } from "../loader/loader.component";
+import { LinkFeatureFlagComponent, LinkFeatureFlagParameters, LoaderComponent, PublicApiService } from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
@@ -15,42 +12,16 @@ import { MondayService } from "../services/monday-service";
   templateUrl: "./add-feature-flag.component.html",
   styleUrls: ["./add-feature-flag.component.scss"],
   imports: [
+    LinkFeatureFlagComponent,
     LoaderComponent,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButton,
-    RouterLink,
-    ProductSelectComponent,
-    SettingSelectComponent,
-    EnvironmentSelectComponent,
-    ConfigSelectComponent,
   ],
 })
 export class AddFeatureFlagComponent implements OnInit {
-  private readonly formBuilder = inject(NonNullableFormBuilder);
   private readonly mondayService = inject(MondayService);
   private readonly publicApiService = inject(PublicApiService);
   private readonly router = inject(Router);
 
   loading = true;
-  formGroup = this.formBuilder.group({
-    productId: new FormControl<string>("", {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    environmentId: new FormControl<string>("", {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    configId: new FormControl<string>("", {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-    settingId: new FormControl<number>(0, {
-      nonNullable: true,
-      validators: [Validators.required],
-    }),
-  });
 
   authorizationParameters!: AuthorizationParameters | null;
   ErrorHandler = ErrorHandler;
@@ -58,16 +29,12 @@ export class AddFeatureFlagComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
     this.authorizationParameters = null;
-    this.formGroup.reset();
 
     this.authorizationParameters = this.mondayService.getAuthorizationParameters();
     this.loading = false;
   }
 
-  add() {
-    if (!this.formGroup.valid) {
-      return;
-    }
+  add(linkFeatureFlagParameters: LinkFeatureFlagParameters) {
 
     this.mondayService.getContext()
       .then(context => this.mondayService.getItem(context.itemId))
@@ -83,7 +50,7 @@ export class AddFeatureFlagComponent implements OnInit {
 
           this.publicApiService
             .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
-            .addOrUpdateIntegrationLink(this.formGroup.controls.environmentId.value, this.formGroup.controls.settingId.value,
+            .addOrUpdateIntegrationLink(linkFeatureFlagParameters.environmentId, linkFeatureFlagParameters.settingId,
               IntegrationLinkType.Monday, item?.id,
               { description: item?.name, url })
             .subscribe({
@@ -91,19 +58,25 @@ export class AddFeatureFlagComponent implements OnInit {
                 void this.router.navigate(["/"]);
               },
               error: (error: Error) => {
+                let errorMessage: string;
                 if (error instanceof HttpErrorResponse && error?.status === 409) {
-                  this.formGroup.setErrors({ serverSide: "Integration link already exists." });
+                  errorMessage = "Integration link already exists.";
                 } else {
-                  ErrorHandler.handleErrors(this.formGroup, error);
+                  errorMessage = ErrorHandler.getErrorMessage(error);
                 }
+                this.mondayService.showErrorMessage(errorMessage);
                 console.log(error);
               },
             });
         }
       )
       .catch((error: unknown) => {
-        ErrorHandler.handleErrors(this.formGroup, error as Error);
+        this.mondayService.showErrorMessage(ErrorHandler.getErrorMessage(error as Error));
         console.log(error);
       });
+  }
+
+  cancel() {
+    void this.router.navigate(["/"]);
   }
 }
