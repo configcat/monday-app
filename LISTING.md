@@ -8,6 +8,8 @@
 > **Note**
 > When editing listings check the app "usage" page as well and update if necessary.
 
+> **Note**
+> The current images can be found on the GDrive > Design-Illustration-Graphics > integrations folder.
 
 # Current listing values
 
