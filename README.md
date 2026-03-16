@@ -56,17 +56,36 @@ Manage features and change your software configuration using [ConfigCat feature 
    ```
    You should see something like this:
    ![ngrok](img/guide2.png  "ngrok")
-1. Go to the developers page (https://YOUR_ORGANIZATION_NAME.monday.com/apps/manage) of your monday account
-1. Hit the `Create App` button
-1. Go to the `OAuth` page and select the `boards:read` permission
-1. Add a new feature
-1. Select `Item Views` and hit `Let's go`
-1. Select `Start from Scrach` and hit `Go To Editor`
-1. Give it a name
-1. Select `Widget Setup` and change the source to Published Build. Hit New Build.
-1. Get your *https ngrok url* (highlighted in the 3rd step) and use it as your `Custom URL`.
-1. Hit `Create build`
-1. Open a board and select an item. You can add your app to the item.
+
+Follow the following steps to create a new app
+1. Go to the developers page (https://YOUR_ORGANIZATION_NAME.monday.com/apps/manage) of your monday account.
+1. Hit the `Create App` button.
+1. Go to the `Build` > `OAuth & permissions` page and select the `boards:read` permission.
+1. Go to the `Build` > `Features` page and `Create` a new feature.
+1. Select `Item Views` and hit `Next`.
+1. Select `Start from Scrach` and hit `Create`.
+1. In `Basic Setting` Give it a name.
+1. In `Deployment` select deployment type `External Hosting` and set the URL to your *https ngrok url* (highlighted in the 3rd step).
+1. Hit `Save Changes`.
+1. Set a feature slug in the dialog and `Save`.
+
+Set up live install and reusable v2 Active Draft version
+1. Click the `Prommote to live` button to set v1 version to live.
+1. Go to the `Distribute` > `Install app` page and click the `Install` button.
+1. Go to the `Manage` > `App version` page.
+1. Click `New version` to create v2 Active Draft version.
+
+Update feature URL - v2 Feature URL can be modified, the changes will be aviable for Collaborators
+1. Go to the `Build` > `Features` page and select your Item View feature.
+1. Select the `Deployment` and change the URL to your *https ngrok url* (highlighted in the 3rd step).
+1. Hit `Save Changes`.
+
+Add the app to a board to test
+1. Click the `puzzle icon` (monday marketpalce) on the top right corner.
+1. Click `Manage` and in the listed app find your local test app and open it.
+1. Click the `Use app` button.
+1. Chose a workspace and a board where you want to test the local app.
+1. Open the previously selected board and select an item. You can add can see the app in the item view.
 
 ## Contributions are welcome
 
