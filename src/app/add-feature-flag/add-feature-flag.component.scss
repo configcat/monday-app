@@ -1,4 +1,9 @@
-.header {
-    font-size: large;
-    margin-top: 16px;
+.container {
+    padding: 0 8px;
+    margin: 8px;
+
+    .header.h2 {
+        font-size: large;
+        margin-top: 16px;
+    }
 }
