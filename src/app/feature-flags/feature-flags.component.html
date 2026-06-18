@@ -48,7 +48,7 @@
             [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
             (deleteSettingRequested)="onDeleteSettingRequested($event)"
-            (saveFailed)="saveFailed()" />
+            (saveFailed)="saveFailed($event)" />
         }
         @if (integrationLinkDetail.config.evaluationVersion === EvaluationVersion.V2) {
           <app-feature-flag-item
@@ -61,7 +61,7 @@
             [settingId]="integrationLinkDetail.setting.settingId"
             [showEnvironmentName]="true"
             (deleteSettingRequested)="onDeleteSettingRequested($event)"
-            (saveFailed)="saveFailed()" />
+            (saveFailed)="saveFailed($event)" />
         }
       </div>
     }

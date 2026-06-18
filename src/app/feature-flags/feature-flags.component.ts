@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -6,6 +7,7 @@ import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "n
 import { DeleteSettingDialogComponent, DeleteSettingDialogData, DeleteSettingDialogResult, DeleteSettingModel, FeatureFlagItemComponent, LoaderComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
 import { firstValueFrom } from "rxjs";
 import { AuthorizationParameters } from "../models/authorization-parameters";
+import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
 
 @Component({
@@ -48,9 +50,23 @@ export class FeatureFlagsComponent implements OnInit {
       this.publicApiService
         .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
         .getIntegrationLinkDetails(IntegrationLinkType.Monday, String(context.itemId) || "1")
-        .subscribe((integrationLinkDetails) => {
-          this.integrationLinkDetails = integrationLinkDetails?.details || [];
-          this.loading = false;
+        .subscribe({
+          next: (integrationLinkDetails) => {
+            this.integrationLinkDetails = integrationLinkDetails?.details || [];
+            this.loading = false;
+          },
+          error: (error: Error) => {
+            let errorMessage: string;
+            if (error instanceof HttpErrorResponse && error?.status === 401) {
+              errorMessage = "Unauthorized access. Check your credentials and try again.";
+              this.loading = false;
+              this.redirectToAuth();
+            } else {
+              errorMessage = ErrorHandler.getErrorMessage(error);
+            }
+            this.mondayService.showErrorMessage(errorMessage);
+            console.log(error);
+          },
         });
     });
 
@@ -96,7 +112,20 @@ export class FeatureFlagsComponent implements OnInit {
       });
   }
 
-  saveFailed() {
+  saveFailed(error: Error) {
+    let errorMessage: string;
+    if (error instanceof HttpErrorResponse && error?.status === 401) {
+      errorMessage = "Unauthorized access. Check your credentials and try again.";
+      this.unauthorize();
+      this.redirectToAuth();
+    } else {
+      errorMessage = ErrorHandler.getErrorMessage(error);
+    }
+    this.mondayService.showErrorMessage(errorMessage);
     void this.loadFeatureFlags();
+  }
+
+  unauthorize() {
+    this.mondayService.removeAuthorizationParameters();
   }
 }

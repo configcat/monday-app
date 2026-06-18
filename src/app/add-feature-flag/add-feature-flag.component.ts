@@ -61,6 +61,10 @@ export class AddFeatureFlagComponent implements OnInit {
                 let errorMessage: string;
                 if (error instanceof HttpErrorResponse && error?.status === 409) {
                   errorMessage = "Integration link already exists.";
+                } else if (error instanceof HttpErrorResponse && error?.status === 401) {
+                  errorMessage = "Unauthorized access. Check your credentials and try again.";
+                  this.unauthorize();
+                  this.redirectToAuth();
                 } else {
                   errorMessage = ErrorHandler.getErrorMessage(error);
                 }
@@ -78,5 +82,27 @@ export class AddFeatureFlagComponent implements OnInit {
 
   cancel() {
     void this.router.navigate(["/"]);
+  }
+
+  componentFailed(error: Error) {
+    let errorMessage: string;
+    if (error instanceof HttpErrorResponse && error?.status === 401) {
+      errorMessage = "Unauthorized access. Check your credentials and try again.";
+      this.mondayService.showErrorMessage(errorMessage);
+      this.unauthorize();
+      this.redirectToAuth();
+    } else {
+      errorMessage = ErrorHandler.getErrorMessage(error);
+    }
+    this.mondayService.showErrorMessage(errorMessage);
+  }
+
+  redirectToAuth() {
+    void this.router.navigate(["/authorize"]);
+  }
+
+  unauthorize() {
+    this.mondayService.removeAuthorizationParameters();
+    this.authorizationParameters = null;
   }
 }
