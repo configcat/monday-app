@@ -62,10 +62,6 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
                 let errorMessage: string;
                 if (error instanceof HttpErrorResponse && error?.status === 409) {
                   errorMessage = "Integration link already exists.";
-                } else if (error instanceof HttpErrorResponse && error?.status === 401) {
-                  errorMessage = "Unauthorized access. Request failed with status code 401.";
-                  this.unauthorize();
-                  this.redirectToAuth();
                 } else {
                   errorMessage = ErrorHandler.getErrorMessage(error);
                 }
@@ -86,25 +82,12 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
   }
 
   componentFailed(error: Error) {
-    let errorMessage: string;
-    if (error instanceof HttpErrorResponse && error?.status === 401) {
-      errorMessage = "Unauthorized access. Check your credentials and try again.";
-      this.mondayService.showErrorMessage(errorMessage);
-      this.unauthorize();
-      this.redirectToAuth();
-    } else {
-      errorMessage = ErrorHandler.getErrorMessage(error);
-    }
+    const errorMessage = ErrorHandler.getErrorMessage(error);
     this.mondayService.showErrorMessage(errorMessage);
   }
 
   redirectToAuth() {
     void this.router.navigate(["/authorize"]);
-  }
-
-  unauthorize() {
-    this.mondayService.removeAuthorizationParameters();
-    this.authorizationParameters = null;
   }
 
 }

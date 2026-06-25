@@ -27,7 +27,6 @@ export class AddFeatureFlagComponent implements OnInit {
   ErrorHandler = ErrorHandler;
 
   ngOnInit(): void {
-    this.loading = true;
     this.authorizationParameters = null;
 
     this.authorizationParameters = this.mondayService.getAuthorizationParameters();
@@ -55,19 +54,17 @@ export class AddFeatureFlagComponent implements OnInit {
               { description: item?.name, url })
             .subscribe({
               next: () => {
+                linkFeatureFlagParameters.callback();
                 void this.router.navigate(["/"]);
               },
               error: (error: Error) => {
                 let errorMessage: string;
                 if (error instanceof HttpErrorResponse && error?.status === 409) {
                   errorMessage = "Integration link already exists.";
-                } else if (error instanceof HttpErrorResponse && error?.status === 401) {
-                  errorMessage = "Unauthorized access. Check your credentials and try again.";
-                  this.unauthorize();
-                  this.redirectToAuth();
                 } else {
                   errorMessage = ErrorHandler.getErrorMessage(error);
                 }
+                linkFeatureFlagParameters.callback();
                 this.mondayService.showErrorMessage(errorMessage);
                 console.log(error);
               },
@@ -85,15 +82,7 @@ export class AddFeatureFlagComponent implements OnInit {
   }
 
   componentFailed(error: Error) {
-    let errorMessage: string;
-    if (error instanceof HttpErrorResponse && error?.status === 401) {
-      errorMessage = "Unauthorized access. Check your credentials and try again.";
-      this.mondayService.showErrorMessage(errorMessage);
-      this.unauthorize();
-      this.redirectToAuth();
-    } else {
-      errorMessage = ErrorHandler.getErrorMessage(error);
-    }
+    const errorMessage = ErrorHandler.getErrorMessage(error);
     this.mondayService.showErrorMessage(errorMessage);
   }
 
@@ -101,8 +90,4 @@ export class AddFeatureFlagComponent implements OnInit {
     void this.router.navigate(["/authorize"]);
   }
 
-  unauthorize() {
-    this.mondayService.removeAuthorizationParameters();
-    this.authorizationParameters = null;
-  }
 }

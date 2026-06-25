@@ -1,4 +1,3 @@
-import { HttpErrorResponse } from "@angular/common/http";
 import { Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
@@ -56,14 +55,7 @@ export class FeatureFlagsComponent implements OnInit {
             this.loading = false;
           },
           error: (error: Error) => {
-            let errorMessage: string;
-            if (error instanceof HttpErrorResponse && error?.status === 401) {
-              errorMessage = "Unauthorized access. Check your credentials and try again.";
-              this.loading = false;
-              this.redirectToAuth();
-            } else {
-              errorMessage = ErrorHandler.getErrorMessage(error);
-            }
+            const errorMessage = ErrorHandler.getErrorMessage(error);
             this.mondayService.showErrorMessage(errorMessage);
             console.log(error);
           },
@@ -112,20 +104,10 @@ export class FeatureFlagsComponent implements OnInit {
       });
   }
 
-  saveFailed(error: Error) {
-    let errorMessage: string;
-    if (error instanceof HttpErrorResponse && error?.status === 401) {
-      errorMessage = "Unauthorized access. Check your credentials and try again.";
-      this.unauthorize();
-      this.redirectToAuth();
-    } else {
-      errorMessage = ErrorHandler.getErrorMessage(error);
-    }
+  componentFailed(error: Error) {
+    const errorMessage = ErrorHandler.getErrorMessage(error);
     this.mondayService.showErrorMessage(errorMessage);
     void this.loadFeatureFlags();
   }
 
-  unauthorize() {
-    this.mondayService.removeAuthorizationParameters();
-  }
 }
