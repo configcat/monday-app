@@ -71,8 +71,7 @@
               "ace-builds",
               "papaparse"
             ],
-            "browser": "src/main.ts",
-            "preserveSymlinks": true
+            "browser": "src/main.ts"
           },
           "configurations": {
             "production": {
