@@ -80,4 +80,14 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
   cancel() {
     void this.router.navigate(["/"]);
   }
+
+  componentFailed(error: Error) {
+    const errorMessage = ErrorHandler.getErrorMessage(error);
+    this.mondayService.showErrorMessage(errorMessage);
+  }
+
+  redirectToAuth() {
+    void this.router.navigate(["/authorize"]);
+  }
+
 }

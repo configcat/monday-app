@@ -13,6 +13,7 @@
       [hideCancelButton]="false"
       [authorizationParameters]="authorizationParameters"
       (cancelInitiated)="cancel()"
-      (linkInitiated)="add($event)" />
+      (linkInitiated)="add($event)"
+      (componentError)="componentFailed($event)" />
   }
 </div>

@@ -27,7 +27,6 @@ export class AddFeatureFlagComponent implements OnInit {
   ErrorHandler = ErrorHandler;
 
   ngOnInit(): void {
-    this.loading = true;
     this.authorizationParameters = null;
 
     this.authorizationParameters = this.mondayService.getAuthorizationParameters();
@@ -55,6 +54,7 @@ export class AddFeatureFlagComponent implements OnInit {
               { description: item?.name, url })
             .subscribe({
               next: () => {
+                linkFeatureFlagParameters.callback();
                 void this.router.navigate(["/"]);
               },
               error: (error: Error) => {
@@ -64,6 +64,7 @@ export class AddFeatureFlagComponent implements OnInit {
                 } else {
                   errorMessage = ErrorHandler.getErrorMessage(error);
                 }
+                linkFeatureFlagParameters.callback();
                 this.mondayService.showErrorMessage(errorMessage);
                 console.log(error);
               },
@@ -79,4 +80,14 @@ export class AddFeatureFlagComponent implements OnInit {
   cancel() {
     void this.router.navigate(["/"]);
   }
+
+  componentFailed(error: Error) {
+    const errorMessage = ErrorHandler.getErrorMessage(error);
+    this.mondayService.showErrorMessage(errorMessage);
+  }
+
+  redirectToAuth() {
+    void this.router.navigate(["/authorize"]);
+  }
+
 }

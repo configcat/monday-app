@@ -20,7 +20,8 @@
           [basicAuthPassword]="authorizationParameters.basicAuthPassword"
           [hideCancelButton]="false"
           (createInitiated)="add($event)"
-          (cancelInitiated)="cancel()" />
+          (cancelInitiated)="cancel()"
+          (componentError)="componentFailed($event)" />
       }
     </div>
   }

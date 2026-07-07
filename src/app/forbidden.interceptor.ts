@@ -14,6 +14,7 @@ export class ForbiddenInterceptor implements HttpInterceptor {
       .pipe(
         catchError((error: Error) => {
           if (error instanceof HttpErrorResponse && error.status === 401) {
+            console.log("Unauthorized access detected. Remove authorization parameters and redirecting to authorization page.");
             this.redirectToAuth();
             return throwError(() => error);
           } else {

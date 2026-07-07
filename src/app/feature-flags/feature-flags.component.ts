@@ -6,6 +6,7 @@ import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "n
 import { DeleteSettingDialogComponent, DeleteSettingDialogData, DeleteSettingDialogResult, DeleteSettingModel, FeatureFlagItemComponent, LoaderComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
 import { firstValueFrom } from "rxjs";
 import { AuthorizationParameters } from "../models/authorization-parameters";
+import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
 
 @Component({
@@ -48,9 +49,16 @@ export class FeatureFlagsComponent implements OnInit {
       this.publicApiService
         .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
         .getIntegrationLinkDetails(IntegrationLinkType.Monday, String(context.itemId) || "1")
-        .subscribe((integrationLinkDetails) => {
-          this.integrationLinkDetails = integrationLinkDetails?.details || [];
-          this.loading = false;
+        .subscribe({
+          next: (integrationLinkDetails) => {
+            this.integrationLinkDetails = integrationLinkDetails?.details || [];
+            this.loading = false;
+          },
+          error: (error: Error) => {
+            const errorMessage = ErrorHandler.getErrorMessage(error);
+            this.mondayService.showErrorMessage(errorMessage);
+            console.log(error);
+          },
         });
     });
 
@@ -96,7 +104,10 @@ export class FeatureFlagsComponent implements OnInit {
       });
   }
 
-  saveFailed() {
+  componentFailed(error: Error) {
+    const errorMessage = ErrorHandler.getErrorMessage(error);
+    this.mondayService.showErrorMessage(errorMessage);
     void this.loadFeatureFlags();
   }
+
 }
