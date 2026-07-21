@@ -19,6 +19,7 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": ["node"],
     "useDefineForClassFields": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

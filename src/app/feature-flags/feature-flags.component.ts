@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, RouterLink } from "@angular/router";
@@ -101,7 +101,7 @@ export class FeatureFlagsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (!result || result.button !== "remove") {
+      if (result?.button !== "remove") {
         return;
       }
       this.mondayService

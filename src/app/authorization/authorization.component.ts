@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, ChangeDetectionStrategy } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { Router, RouterLink } from "@angular/router";
 import { AuthorizationComponent, LoaderComponent } from "ng-configcat-publicapi-ui";
