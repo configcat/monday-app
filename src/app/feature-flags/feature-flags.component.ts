@@ -1,9 +1,18 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { MatDialog } from "@angular/material/dialog";
 import { Router, RouterLink } from "@angular/router";
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "ng-configcat-publicapi";
-import { DeleteSettingDialogComponent, DeleteSettingDialogData, DeleteSettingDialogResult, DeleteSettingModel, FeatureFlagItemComponent, LoaderComponent, PublicApiService, SettingItemComponent } from "ng-configcat-publicapi-ui";
+import {
+  DeleteSettingDialogComponent,
+  DeleteSettingDialogData,
+  DeleteSettingDialogResult,
+  DeleteSettingModel,
+  FeatureFlagItemComponent,
+  LoaderComponent,
+  PublicApiService,
+  SettingItemComponent,
+} from "ng-configcat-publicapi-ui";
 import { firstValueFrom } from "rxjs";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
@@ -13,6 +22,7 @@ import { MondayService } from "../services/monday-service";
   selector: "configcat-monday-feature-flags",
   templateUrl: "./feature-flags.component.html",
   styleUrls: ["./feature-flags.component.scss"],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, MatButton, FeatureFlagItemComponent, SettingItemComponent, LoaderComponent],
 })
 export class FeatureFlagsComponent implements OnInit {
@@ -27,30 +37,37 @@ export class FeatureFlagsComponent implements OnInit {
   EvaluationVersion = EvaluationVersion;
 
   ngOnInit(): void {
-    this.mondayService.isViewOnly().then(isViewOnly => {
-      if (isViewOnly) {
-        this.redirectToViewerOnly();
-        return;
-      }
+    this.mondayService
+      .isViewOnly()
+      .then(isViewOnly => {
+        if (isViewOnly) {
+          this.redirectToViewerOnly();
+          return;
+        }
 
-      const params = this.mondayService.getAuthorizationParameters();
-      if (!params) {
-        this.redirectToAuth();
-        return;
-      }
-      this.authorizationParameters = params;
-      void this.loadFeatureFlags();
-    }).catch((error: unknown) => { console.log(error); });
-
+        const params = this.mondayService.getAuthorizationParameters();
+        if (!params) {
+          this.redirectToAuth();
+          return;
+        }
+        this.authorizationParameters = params;
+        void this.loadFeatureFlags();
+      })
+      .catch((error: unknown) => {
+        console.log(error);
+      });
   }
 
   loadFeatureFlags() {
     return this.mondayService.getContext().then(context => {
       this.publicApiService
-        .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
+        .createIntegrationLinksService(
+          this.authorizationParameters.basicAuthUsername,
+          this.authorizationParameters.basicAuthPassword
+        )
         .getIntegrationLinkDetails(IntegrationLinkType.Monday, String(context.itemId) || "1")
         .subscribe({
-          next: (integrationLinkDetails) => {
+          next: integrationLinkDetails => {
             this.integrationLinkDetails = integrationLinkDetails?.details || [];
             this.loading = false;
           },
@@ -61,7 +78,6 @@ export class FeatureFlagsComponent implements OnInit {
           },
         });
     });
-
   }
 
   redirectToAuth() {
@@ -84,24 +100,34 @@ export class FeatureFlagsComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed()
-      .subscribe(result => {
-        if (!result || result.button !== "remove") {
-          return;
-        }
-        this.mondayService.getContext()
-          .then(context => {
-            return firstValueFrom(this.publicApiService
-              .createIntegrationLinksService(this.authorizationParameters.basicAuthUsername, this.authorizationParameters.basicAuthPassword)
-              .deleteIntegrationLink(data.environment.environmentId, data.setting.settingId, IntegrationLinkType.Monday, String(context.itemId)));
-          })
-          .then(() => {
-            return this.loadFeatureFlags();
-          })
-          .catch((error: unknown) => {
-            console.log(error);
-          });
-      });
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result || result.button !== "remove") {
+        return;
+      }
+      this.mondayService
+        .getContext()
+        .then(context => {
+          return firstValueFrom(
+            this.publicApiService
+              .createIntegrationLinksService(
+                this.authorizationParameters.basicAuthUsername,
+                this.authorizationParameters.basicAuthPassword
+              )
+              .deleteIntegrationLink(
+                data.environment.environmentId,
+                data.setting.settingId,
+                IntegrationLinkType.Monday,
+                String(context.itemId)
+              )
+          );
+        })
+        .then(() => {
+          return this.loadFeatureFlags();
+        })
+        .catch((error: unknown) => {
+          console.log(error);
+        });
+    });
   }
 
   componentFailed(error: Error) {
@@ -109,5 +135,4 @@ export class FeatureFlagsComponent implements OnInit {
     this.mondayService.showErrorMessage(errorMessage);
     void this.loadFeatureFlags();
   }
-
 }

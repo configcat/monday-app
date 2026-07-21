@@ -1,8 +1,13 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject, OnInit, ChangeDetectionStrategy } from "@angular/core";
 import { Router } from "@angular/router";
 import { IntegrationLinkType } from "ng-configcat-publicapi";
-import { LinkFeatureFlagComponent, LinkFeatureFlagParameters, LoaderComponent, PublicApiService } from "ng-configcat-publicapi-ui";
+import {
+  LinkFeatureFlagComponent,
+  LinkFeatureFlagParameters,
+  LoaderComponent,
+  PublicApiService,
+} from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
@@ -11,10 +16,8 @@ import { MondayService } from "../services/monday-service";
   selector: "configcat-monday-add-feature-flag",
   templateUrl: "./add-feature-flag.component.html",
   styleUrls: ["./add-feature-flag.component.scss"],
-  imports: [
-    LinkFeatureFlagComponent,
-    LoaderComponent,
-  ],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [LinkFeatureFlagComponent, LoaderComponent],
 })
 export class AddFeatureFlagComponent implements OnInit {
   private readonly mondayService = inject(MondayService);
@@ -34,43 +37,48 @@ export class AddFeatureFlagComponent implements OnInit {
   }
 
   add(linkFeatureFlagParameters: LinkFeatureFlagParameters) {
-
-    this.mondayService.getContext()
+    this.mondayService
+      .getContext()
       .then(context => this.mondayService.getItem(context.itemId))
-      .then(
-        item => {
-          let url = "";
-          if (item?.id && item?.board?.id) {
-            url = this.mondayService.getParentOrigin();
-            if (url) {
-              url += `/boards/${item.board.id}/pulses/${item.id}`;
-            }
+      .then(item => {
+        let url = "";
+        if (item?.id && item?.board?.id) {
+          url = this.mondayService.getParentOrigin();
+          if (url) {
+            url += `/boards/${item.board.id}/pulses/${item.id}`;
           }
-
-          this.publicApiService
-            .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
-            .addOrUpdateIntegrationLink(linkFeatureFlagParameters.environmentId, linkFeatureFlagParameters.settingId,
-              IntegrationLinkType.Monday, item?.id,
-              { description: item?.name, url })
-            .subscribe({
-              next: () => {
-                linkFeatureFlagParameters.callback();
-                void this.router.navigate(["/"]);
-              },
-              error: (error: Error) => {
-                let errorMessage: string;
-                if (error instanceof HttpErrorResponse && error?.status === 409) {
-                  errorMessage = "Integration link already exists.";
-                } else {
-                  errorMessage = ErrorHandler.getErrorMessage(error);
-                }
-                linkFeatureFlagParameters.callback();
-                this.mondayService.showErrorMessage(errorMessage);
-                console.log(error);
-              },
-            });
         }
-      )
+
+        this.publicApiService
+          .createIntegrationLinksService(
+            this.authorizationParameters?.basicAuthUsername,
+            this.authorizationParameters?.basicAuthPassword
+          )
+          .addOrUpdateIntegrationLink(
+            linkFeatureFlagParameters.environmentId,
+            linkFeatureFlagParameters.settingId,
+            IntegrationLinkType.Monday,
+            item?.id,
+            { description: item?.name, url }
+          )
+          .subscribe({
+            next: () => {
+              linkFeatureFlagParameters.callback();
+              void this.router.navigate(["/"]);
+            },
+            error: (error: Error) => {
+              let errorMessage: string;
+              if (error instanceof HttpErrorResponse && error?.status === 409) {
+                errorMessage = "Integration link already exists.";
+              } else {
+                errorMessage = ErrorHandler.getErrorMessage(error);
+              }
+              linkFeatureFlagParameters.callback();
+              this.mondayService.showErrorMessage(errorMessage);
+              console.log(error);
+            },
+          });
+      })
       .catch((error: unknown) => {
         this.mondayService.showErrorMessage(ErrorHandler.getErrorMessage(error as Error));
         console.log(error);
@@ -89,5 +97,4 @@ export class AddFeatureFlagComponent implements OnInit {
   redirectToAuth() {
     void this.router.navigate(["/authorize"]);
   }
-
 }

@@ -1,10 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 
 @Component({
   selector: "configcat-monday-viewer-only",
   templateUrl: "./viewer-only.component.html",
+  changeDetection: ChangeDetectionStrategy.Eager,
   styleUrls: ["./viewer-only.component.scss"],
 })
-export class ViewerOnlyComponent {
-
-}
+export class ViewerOnlyComponent {}
