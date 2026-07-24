@@ -1,8 +1,13 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { IntegrationLinkType, SettingType } from "ng-configcat-publicapi";
-import { CreateFeatureFlagComponent, FormHelper, LinkFeatureFlagParameters, PublicApiService } from "ng-configcat-publicapi-ui";
+import {
+  CreateFeatureFlagComponent,
+  FormHelper,
+  LinkFeatureFlagParameters,
+  PublicApiService,
+} from "ng-configcat-publicapi-ui";
 import { AuthorizationParameters } from "../models/authorization-parameters";
 import { ErrorHandler } from "../services/error-handler";
 import { MondayService } from "../services/monday-service";
@@ -11,9 +16,8 @@ import { MondayService } from "../services/monday-service";
   selector: "configcat-monday-create-feature-flag",
   templateUrl: "./create-feature-flag.component.html",
   styleUrls: ["./create-feature-flag.component.scss"],
-  imports: [
-    CreateFeatureFlagComponent,
-  ],
+  changeDetection: ChangeDetectionStrategy.Eager,
+  imports: [CreateFeatureFlagComponent],
 })
 export class CreateLinkFeatureFlagComponent implements OnInit {
   private readonly mondayService = inject(MondayService);
@@ -36,41 +40,46 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
   }
 
   add(linkFeatureFlagParameters: LinkFeatureFlagParameters) {
-
-    this.mondayService.getContext()
+    this.mondayService
+      .getContext()
       .then(context => this.mondayService.getItem(context.itemId))
-      .then(
-        item => {
-          let url = "";
-          if (item?.id && item?.board?.id) {
-            url = this.mondayService.getParentOrigin();
-            if (url) {
-              url += `/boards/${item.board.id}/pulses/${item.id}`;
-            }
+      .then(item => {
+        let url = "";
+        if (item?.id && item?.board?.id) {
+          url = this.mondayService.getParentOrigin();
+          if (url) {
+            url += `/boards/${item.board.id}/pulses/${item.id}`;
           }
-
-          return this.publicApiService
-            .createIntegrationLinksService(this.authorizationParameters?.basicAuthUsername, this.authorizationParameters?.basicAuthPassword)
-            .addOrUpdateIntegrationLink(linkFeatureFlagParameters.environmentId, linkFeatureFlagParameters.settingId,
-              IntegrationLinkType.Monday, item.id,
-              { description: item.name, url })
-            .subscribe({
-              next: () => {
-                void this.router.navigate(["/"]);
-              },
-              error: (error: Error) => {
-                let errorMessage: string;
-                if (error instanceof HttpErrorResponse && error?.status === 409) {
-                  errorMessage = "Integration link already exists.";
-                } else {
-                  errorMessage = ErrorHandler.getErrorMessage(error);
-                }
-                this.mondayService.showErrorMessage(errorMessage);
-                console.log(error);
-              },
-            });
         }
-      )
+
+        return this.publicApiService
+          .createIntegrationLinksService(
+            this.authorizationParameters?.basicAuthUsername,
+            this.authorizationParameters?.basicAuthPassword
+          )
+          .addOrUpdateIntegrationLink(
+            linkFeatureFlagParameters.environmentId,
+            linkFeatureFlagParameters.settingId,
+            IntegrationLinkType.Monday,
+            item.id,
+            { description: item.name, url }
+          )
+          .subscribe({
+            next: () => {
+              void this.router.navigate(["/"]);
+            },
+            error: (error: Error) => {
+              let errorMessage: string;
+              if (error instanceof HttpErrorResponse && error?.status === 409) {
+                errorMessage = "Integration link already exists.";
+              } else {
+                errorMessage = ErrorHandler.getErrorMessage(error);
+              }
+              this.mondayService.showErrorMessage(errorMessage);
+              console.log(error);
+            },
+          });
+      })
       .catch((error: unknown) => {
         this.mondayService.showErrorMessage(ErrorHandler.getErrorMessage(error as Error));
         console.log(error);
@@ -89,5 +98,4 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
   redirectToAuth() {
     void this.router.navigate(["/authorize"]);
   }
-
 }

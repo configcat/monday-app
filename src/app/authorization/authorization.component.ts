@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/core";
 import { MatButton } from "@angular/material/button";
 import { Router, RouterLink } from "@angular/router";
 import { AuthorizationComponent, LoaderComponent } from "ng-configcat-publicapi-ui";
@@ -9,6 +9,7 @@ import { MondayService } from "../services/monday-service";
   selector: "configcat-monday-authorization",
   templateUrl: "./authorization.component.html",
   styleUrls: ["./authorization.component.scss"],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [LoaderComponent, MatButton, RouterLink, AuthorizationComponent],
 })
 export class AuthComponent implements OnInit {

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { MondayService } from "./services/monday-service";
 
@@ -6,10 +6,10 @@ import { MondayService } from "./services/monday-service";
   selector: "configcat-monday-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.scss"],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterModule],
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   private readonly mondayService = inject(MondayService);
 
   title = "ConfigCat Feature Flags";
@@ -23,8 +23,5 @@ export class AppComponent implements OnInit, OnDestroy {
     if (this.themeChangeListenerUnsubscribe) {
       this.themeChangeListenerUnsubscribe();
     }
-
   }
-
 }
-
