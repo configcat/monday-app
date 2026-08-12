@@ -8,9 +8,7 @@
   }
   @if (!loading) {
     <app-link-feature-flag
-      addButtonLabel="Link"
-      cancelButtonLabel="Go back"
-      [hideCancelButton]="false"
+      [customize]="getCustomize()"
       [authorizationParameters]="authorizationParameters"
       (cancelInitiated)="cancel()"
       (linkInitiated)="add($event)"

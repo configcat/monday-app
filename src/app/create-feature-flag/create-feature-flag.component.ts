@@ -4,7 +4,9 @@ import { Router } from "@angular/router";
 import { IntegrationLinkType, SettingType } from "ng-configcat-publicapi";
 import {
   CreateFeatureFlagComponent,
+  DEFAULT_CUSTOMIZE_CREATE_FEATURE_FLAG,
   FormHelper,
+  ICustomizeCreateFeatureFlag,
   LinkFeatureFlagParameters,
   PublicApiService,
 } from "ng-configcat-publicapi-ui";
@@ -97,5 +99,19 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
 
   redirectToAuth() {
     void this.router.navigate(["/authorize"]);
+  }
+
+  getCustomize(): ICustomizeCreateFeatureFlag {
+    return {
+      ...DEFAULT_CUSTOMIZE_CREATE_FEATURE_FLAG,
+      createButtonLabel: "Create and link",
+      cancelButtonLabel: "Go back",
+      targetSectionHeader: "Select the target location in ConfigCat",
+      targetSectionDescription: "The feature flag will be created under the following product and config in ConfigCat.",
+      flagSectionHeader: "Set feature flag properties",
+      flagSectionDescription: "The feature flag will be created with the following properties in ConfigCat.",
+      linkSectionHeader: "Link ConfigCat environment",
+      linkSectionDescription: "This monday item will be linked to the following environment in ConfigCat. So it will display/set the feature flag value in that environment.",
+    };
   }
 }

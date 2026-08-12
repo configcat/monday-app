@@ -4,11 +4,13 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router, RouterLink } from "@angular/router";
 import { EvaluationVersion, IntegrationLinkDetail, IntegrationLinkType } from "ng-configcat-publicapi";
 import {
+  DEFAULT_CUSTOMIZE_FEATURE_FLAG,
   DeleteSettingDialogComponent,
   DeleteSettingDialogData,
   DeleteSettingDialogResult,
   DeleteSettingModel,
   FeatureFlagItemComponent,
+  ICustomizeFeatureFlag,
   LoaderComponent,
   PublicApiService,
   SettingItemComponent,
@@ -134,5 +136,9 @@ export class FeatureFlagsComponent implements OnInit {
     const errorMessage = ErrorHandler.getErrorMessage(error);
     this.mondayService.showErrorMessage(errorMessage);
     void this.loadFeatureFlags();
+  }
+
+  getFeatureFlagCustomizeSettings(): ICustomizeFeatureFlag {
+    return { ...DEFAULT_CUSTOMIZE_FEATURE_FLAG, menuDeleteSettingText: "Unlink" };
   }
 }
