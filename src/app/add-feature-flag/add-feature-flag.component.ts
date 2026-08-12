@@ -100,7 +100,7 @@ export class AddFeatureFlagComponent implements OnInit {
     void this.router.navigate(["/authorize"]);
   }
 
-   getCustomize(): ICustomizeLinkFeatureFlag {
+  getCustomize(): ICustomizeLinkFeatureFlag {
     return { ...DEFAULT_CUSTOMIZE_LINK_FEATURE_FLAG, hideCancelButton: false, addButtonLabel: "Link", cancelButtonLabel: "Go back" };
   }
 }
