@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component, inject, OnInit } from "@angular/cor
 import { Router } from "@angular/router";
 import { IntegrationLinkType } from "ng-configcat-publicapi";
 import {
+  DEFAULT_CUSTOMIZE_LINK_FEATURE_FLAG,
+  ICustomizeLinkFeatureFlag,
   LinkFeatureFlagComponent,
   LinkFeatureFlagParameters,
   LoaderComponent,
@@ -96,5 +98,9 @@ export class AddFeatureFlagComponent implements OnInit {
 
   redirectToAuth() {
     void this.router.navigate(["/authorize"]);
+  }
+
+  getCustomize(): ICustomizeLinkFeatureFlag {
+    return { ...DEFAULT_CUSTOMIZE_LINK_FEATURE_FLAG, hideCancelButton: false, addButtonLabel: "Link", cancelButtonLabel: "Go back" };
   }
 }
