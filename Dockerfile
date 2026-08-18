@@ -9,6 +9,8 @@ COPY package*.json /configcat-monday-app/
 WORKDIR /configcat-monday-app
 RUN npm install
 COPY ./ /configcat-monday-app/
+# Disable chunk optimization to avoid huge main js with unexpected characters that break the app 
+ENV NG_BUILD_OPTIMIZE_CHUNKS=false
 RUN npm run build
 
 FROM base as final
