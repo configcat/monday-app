@@ -132,6 +132,11 @@ export class FeatureFlagsComponent implements OnInit {
     });
   }
 
+  loadFailed(error: Error) {
+    const errorMessage = ErrorHandler.getErrorMessage(error);
+    this.mondayService.showErrorMessage(errorMessage);
+  }
+
   componentFailed(error: Error) {
     const errorMessage = ErrorHandler.getErrorMessage(error);
     this.mondayService.showErrorMessage(errorMessage);
