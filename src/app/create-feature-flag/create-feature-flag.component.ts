@@ -71,7 +71,7 @@ export class CreateLinkFeatureFlagComponent implements OnInit {
               void this.router.navigate(["/"]);
             },
             error: (error: Error) => {
-              let errorMessage: string;
+              let errorMessage: string | null;
               if (error instanceof HttpErrorResponse && error?.status === 409) {
                 errorMessage = "Integration link already exists.";
               } else {
