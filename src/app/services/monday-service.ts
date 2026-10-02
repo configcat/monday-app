@@ -101,7 +101,10 @@ export class MondayService {
     });
   }
 
-  showErrorMessage(message: string) {
+  showErrorMessage(message: string | null) {
+    if (!message) {
+      return;
+    }
     void monday.execute("notice", {
       message: message,
       type: "error",
