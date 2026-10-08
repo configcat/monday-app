@@ -9,7 +9,8 @@
   @if (!loading) {
     <app-link-feature-flag
       [customize]="getCustomize()"
-      [authorizationParameters]="authorizationParameters"
+      [basicAuthUsername]="authorizationParameters!.basicAuthUsername"
+      [basicAuthPassword]="authorizationParameters!.basicAuthPassword"
       (cancelInitiated)="cancel()"
       (linkInitiated)="add($event)"
       (componentError)="componentFailed($event)" />
